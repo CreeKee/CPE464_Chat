@@ -91,10 +91,13 @@ void serverControl(int serverSocket){
 	while(1){
 
 		if((action = pollCall(0)) != -1){
+			printf("flag1\n");
 			if(action == serverSocket){
+				printf("flag2\n");
 				addNewSocket(action);
 			}
 			else{
+				printf("flag3\n");
 				processClient(action);
 			}
 
