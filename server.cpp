@@ -88,6 +88,7 @@ int checkArgs(int argc, char *argv[])
 
 void serverControl(int serverSocket){
 	int action;
+	setupPollSet();
 	addToPollSet(serverSocket);
 	printf("flag0\n");
 	while(1){
