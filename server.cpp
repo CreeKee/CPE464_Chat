@@ -18,7 +18,7 @@
 void recvFromClient(int clientSocket);
 int checkArgs(int argc, char *argv[]);
 void serverControl(int serverSocket);
-void addNewSocket(int newClient);
+void addNewSocket(int newClient, int mainServerSocket);
 void processClient(int clientSocket);
 
 int main(int argc, char *argv[])
@@ -97,7 +97,7 @@ void serverControl(int serverSocket){
 			printf("flag1\n");
 			if(action == serverSocket){
 				printf("flag2\n");
-				addNewSocket(action);
+				addNewSocket(action, serverSocket);
 			}
 			else{
 				printf("flag3\n");
