@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	// wait for client to connect
 	clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
 
-	recvFromClient(clientSocket);
+	serverControl(mainServerSocket);
 	
 	/* close the sockets */
 	close(clientSocket);
