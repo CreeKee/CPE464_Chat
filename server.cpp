@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	mainServerSocket = tcpServerSetup(portNumber);
 
 	// wait for client to connect
-	clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
+	//clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
 
 	serverControl(mainServerSocket);
 	
@@ -113,8 +113,9 @@ void serverControl(int serverSocket){
 	return;
 }
 
-void addNewSocket(int newClient){
-	addToPollSet(newClient);
+void addNewSocket(int newClient, int mainServerSocket){
+	
+	addToPollSet(tcpAccept(mainServerSocket, DEBUG_FLAG));
 	return;
 }
 
