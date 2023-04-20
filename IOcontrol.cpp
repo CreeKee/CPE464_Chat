@@ -21,14 +21,14 @@ int sendPDU(int clientSocket, uint8_t* dataBuffer, int lengthOfData){
 int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
     int dataLength = 0;
-    safeRecv(socketNumber, dataBuffer, LENGTHFIELD, 0);
-    dataLength = ntohs(*(uint16_t*)dataBuffer);
+    safeRecv(socketNumber, dataBuffer, LENGTHFIELD, MSG_WAITALL);
+    dataLength = ntohs(*(uint16_t*)dataBuffer)-LENGTHFIELD;
 
-    if(dataLength-LENGTHFIELD > bufferSize){
+    if(dataLength > bufferSize){
         perror("packet too large\n");
         exit(-1);
     }
 
-    return safeRecv(socketNumber, dataBuffer, dataLength, 0);
+    return safeRecv(socketNumber, dataBuffer, dataLength, MSG_WAITALL);
 
 }
