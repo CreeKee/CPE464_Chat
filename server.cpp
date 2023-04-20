@@ -92,7 +92,7 @@ void serverControl(int serverSocket){
 	printf("flag0\n");
 	while(1){
 
-		if((action = pollCall(0)) != -1){
+		if((action = pollCall(-1)) != -1){
 			printf("flag1\n");
 			if(action == serverSocket){
 				printf("flag2\n");
@@ -103,6 +103,9 @@ void serverControl(int serverSocket){
 				processClient(action);
 			}
 
+		}
+		else{
+			printf("poll failed %d\n", action);
 		}
 			
 	}
