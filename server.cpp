@@ -17,6 +17,7 @@
 
 void recvFromClient(int clientSocket);
 int checkArgs(int argc, char *argv[]);
+void serverControl(int serverSocket);
 void addNewSocket(int newClient);
 void processClient(int clientSocket);
 
