@@ -21,7 +21,7 @@ int sendPDU(int clientSocket, uint8_t* dataBuffer, int lengthOfData){
 int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
     int dataLength = 0;
-    safeRecv(socketNumber, dataBuffer, LENGTHFIELD, MSG_WAITALL);
+    safeRecv(socketNumber, dataBuffer, LENGTHFIELD, 0);
     dataLength = ntohs(*(uint16_t*)dataBuffer);
 
     if(dataLength-LENGTHFIELD > bufferSize){
@@ -29,6 +29,6 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
         exit(-1);
     }
 
-    return safeRecv(socketNumber, dataBuffer, dataLength, MSG_WAITALL);
+    return safeRecv(socketNumber, dataBuffer, dataLength, 0);
 
 }
