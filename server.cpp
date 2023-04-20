@@ -10,12 +10,15 @@
 #include "safeUtil.h"
 #include "networks.h"
 #include "IOcontrol.hpp"
+#include "pollLib.h"
 
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
 
 void recvFromClient(int clientSocket);
 int checkArgs(int argc, char *argv[]);
+void addNewSocket(int newClient);
+void processClient(int clientSocket);
 
 int main(int argc, char *argv[])
 {
@@ -82,3 +85,48 @@ int checkArgs(int argc, char *argv[])
 	return portNumber;
 }
 
+void serverControl(int serverSocket){
+	int action;
+	while(1){
+
+		if((action = pollCall(0)) != -1){
+			if(action == serverSocket){
+				addNewSocket(action);
+			}
+			else{
+				processClient(action);
+			}
+
+		}
+			
+	}
+	return;
+}
+
+void addNewSocket(int newClient){
+	addToPollSet(newClient);
+	return;
+}
+
+void processClient(int clientSocket){
+
+	uint8_t dataBuffer[MAXBUF];
+	int messageLen = 0;
+	
+	//now get the data from the client_socket
+	if ((messageLen = recvPDU(clientSocket, dataBuffer, MAXBUF)) < 0)
+	{
+		perror("recv call");
+		exit(-1);
+	}
+
+	if (messageLen > 0)
+	{
+		printf("Message received on socket: %d, length: %d Data: %s\n", clientSocket, messageLen, dataBuffer);
+	}
+	else
+	{
+		printf("Connection closed by other side\n");
+	}
+	return;
+}
