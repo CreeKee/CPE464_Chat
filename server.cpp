@@ -103,7 +103,7 @@ void serverControl(int serverSocket){
 				printf("flag3\n");
 				processClient(action);
 			}
-			
+
 		}
 			
 	}
@@ -135,6 +135,7 @@ void processClient(int clientSocket){
 	else
 	{
 		printf("Connection closed by other side\n");
+		removeFromPollSet(clientSocket);
 	}
 	return;
 }
