@@ -26,6 +26,7 @@ int main(int argc, char * argv[])
 
 	/* set up the TCP Client socket  */
 	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
+	
 	while(1){
 		sendToServer(socketNum);
 	}

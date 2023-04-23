@@ -88,19 +88,23 @@ int checkArgs(int argc, char *argv[])
 
 void serverControl(int serverSocket){
 	int action;
+
+	//create poll
 	setupPollSet();
+	
+	//add server socket to poll set to listen for new connections
 	addToPollSet(serverSocket);
-	printf("flag0\n");
+
+	//infinite loop as per lab instructions
 	while(1){
 
+		//poll all current sockets
 		if((action = pollCall(0)) != -1){
-			printf("flag1\n");
+
 			if(action == serverSocket){
-				printf("flag2\n");
 				addNewSocket(action, serverSocket);
 			}
 			else{
-				printf("flag3\n");
 				processClient(action);
 			}
 
@@ -112,7 +116,17 @@ void serverControl(int serverSocket){
 
 void addNewSocket(int newClient, int mainServerSocket){
 	
-	addToPollSet(tcpAccept(mainServerSocket, DEBUG_FLAG));
+	int sock;
+
+	//add new socket to the poll
+	if(sock = tcpAccept(mainServerSocket, DEBUG_FLAG) == -1){
+		perror("failed to accept new client");
+
+		//current behavior for failed accept it to exit.
+		exit(1);
+	}
+
+	addToPollSet(sock);
 	return;
 }
 
@@ -121,13 +135,14 @@ void processClient(int clientSocket){
 	uint8_t dataBuffer[MAXBUF];
 	int messageLen = 0;
 	
-	//now get the data from the client_socket
+	//get data from clientSocket
 	if ((messageLen = recvPDU(clientSocket, dataBuffer, MAXBUF)) < 0)
 	{
 		perror("recv call");
 		exit(-1);
 	}
 
+	//check for disconnection
 	if (messageLen > 0)
 	{
 		printf("Message received on socket: %d, length: %d Data: %s\n", clientSocket, messageLen, dataBuffer);
