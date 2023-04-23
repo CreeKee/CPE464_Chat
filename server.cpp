@@ -119,7 +119,7 @@ void addNewSocket(int newClient, int mainServerSocket){
 	int sock;
 
 	//add new socket to the poll
-	if(sock = tcpAccept(mainServerSocket, DEBUG_FLAG) == -1){
+	if((sock = tcpAccept(mainServerSocket, DEBUG_FLAG)) == -1){
 		perror("failed to accept new client");
 
 		//current behavior for failed accept it to exit.
