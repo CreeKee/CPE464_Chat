@@ -14,7 +14,7 @@ int sendPDU(int clientSocket, uint8_t* dataBuffer){
 }
 
 void prependLength(uint8_t* dataBuffer, int lengthOfData){
-
+    //TODO
     int fullLen = lengthOfData+LENGTHFIELD;
     uint8_t* PDU = (uint8_t*)sCalloc(fullLen,sizeof(uint8_t));
 
@@ -25,10 +25,8 @@ void prependLength(uint8_t* dataBuffer, int lengthOfData){
         exit(-1);
     }
     *(uint16_t*)PDU = htons(fullLen);
-    printf("length check2 %d\n",ntohs(*(uint16_t*)PDU)-LENGTHFIELD);
-    printf("converted len = %d\n",htons(fullLen));
     memcpy(PDU+LENGTHFIELD, dataBuffer, lengthOfData);
-
+    memcpy(dataBuffer, PDU, fullLen);
     free(PDU);
 
     return;
