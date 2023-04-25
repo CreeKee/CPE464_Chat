@@ -23,7 +23,8 @@ void Server::serverAction(){
             addNewClient(serverSocket, "test handle");
         }
         else{
-            processPDU(action);
+            //processPDU(action);
+            safeSend(action, (uint8_t*)"test", 5, 0);
         }
     }
 }
