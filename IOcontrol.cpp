@@ -6,7 +6,7 @@ int sendPDU(int clientSocket, uint8_t* dataBuffer){
     int retval = 0;
     
 
-    retval = safeSend(clientSocket, PDU, fullLen, 0);
+    //retval = safeSend(clientSocket, PDU, fullLen, 0);
 
     
 

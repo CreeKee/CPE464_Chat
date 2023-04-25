@@ -7,14 +7,14 @@ Clientele::Clientele(){
     size =DEFAULTSIZE;
     clientCount = 0;
     for(int init = 0; init < size; init++){
-        clients[init] = nullptr;
+        clients[init] = NULL;
     }
 }
 
 bool Clientele::insertClient(const char* handle, int socket){
     int hashVal = hash(handle);
     bool valid = true;
-    while(clients[hashVal] != nullptr && valid == true){
+    while(clients[hashVal] != NULL && valid == true){
         valid = (strcmp(clients[hashVal]->handle,handle) != 0);
         hashVal = (hashVal+1)%size;
     }
@@ -31,24 +31,24 @@ bool Clientele::insertClient(const char* handle, int socket){
 int Clientele::getClientPort(char* handle){
 
     int hashVal = hash(handle);
-    while(clients[hashVal] != nullptr && strcmp(clients[hashVal]->handle,handle) != 0){
+    while(clients[hashVal] != NULL && strcmp(clients[hashVal]->handle,handle) != 0){
         hashVal = (hashVal+1)%size;
     }
 
-    return clients[hashVal] != nullptr ? clients[hashVal]->socket:-1;
+    return clients[hashVal] != NULL ? clients[hashVal]->socket:-1;
 }
 
 void Clientele::removeClientHandle(char* handle){
     int hashVal = hash(handle);
-    while(clients[hashVal] != nullptr && strcmp(clients[hashVal]->handle,handle) != 0){
+    while(clients[hashVal] != NULL && strcmp(clients[hashVal]->handle,handle) != 0){
         hashVal = (hashVal+1)%size;
     }
 
-    if(clients[hashVal] != nullptr){
+    if(clients[hashVal] != NULL){
         //TODO close socket
         free(clients[hashVal]->handle);
         free(clients[hashVal]);
-        clients[hashVal] = nullptr;
+        clients[hashVal] = NULL;
         clientCount--;
     }
     else{
@@ -59,12 +59,12 @@ void Clientele::removeClientHandle(char* handle){
 void Clientele::removeClientSocket(int target){
     bool found = false;
     for(int index = 0; index < size && found == false; index++){
-        if(clients[index] != nullptr && clients[index]->socket == target){
+        if(clients[index] != NULL && clients[index]->socket == target){
             found = true;
             //TODO close socket
             free(clients[index]->handle);
             free(clients[index]);
-            clients[index] = nullptr;
+            clients[index] = NULL;
             clientCount--;
         }
     }
@@ -79,7 +79,7 @@ Crowd Clientele::getClients(){
     Crowd retval(clientCount);
 
     for(int index = 0, found = 0; index < size && found < clientCount; index++){
-        if(clients[index] != nullptr){
+        if(clients[index] != NULL){
             retval.clients[found].socket = clients[index]->socket;
             memcpy(retval.clients[found].handle, clients[index]->handle, HANDLELENGTH);
             found++;
@@ -114,11 +114,11 @@ void Clientele::expandTable(){
 
 
         for(int index = 0; index < size; index++){
-            clients[index] = nullptr;
+            clients[index] = NULL;
         }
 
         for(int index = 0; index < oldSize; index++){
-            if(oldTable[index] != nullptr){
+            if(oldTable[index] != NULL){
                 insertClient(oldTable[index]->handle, oldTable[index]->socket);
                 free(oldTable[index]);
             }

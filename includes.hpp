@@ -20,7 +20,10 @@
 #define DEFAULTSIZE 100
 #define SIZETHRESH 0.5
 
+#ifndef CLNT_H
+#define CLNT_H
 struct client{
     char handle[HANDLELENGTH];
     int socket;
 };
+#endif

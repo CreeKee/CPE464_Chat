@@ -17,7 +17,7 @@ class Server{
 
     private:
     void (Server::*flagActions[FLAGCOUNT])(uint8_t[], int ) = {
-        cascadeB, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag};
+        &Server::cascadeB, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag};
     Clientele clientTable;
     int serverSocket;
 

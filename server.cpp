@@ -1,5 +1,5 @@
 #include "includes.hpp"
-#include "serverOBJ.hpp"
+#include "serverObj.hpp"
 #include "safeUtil.h"
 #include "networks.h"
 #include "IOcontrol.hpp"
@@ -7,7 +7,7 @@
 #include "clientTable.hpp"
 
 
-
+int checkArgs(int argc, char *argv[]);
 int main(int argc, char *argv[])
 {
 	int mainServerSocket = 0;   //socket descriptor for the server socket
