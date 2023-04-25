@@ -12,3 +12,14 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdint.h>
+
+#include "safeUtil.h"
+#include "networks.h"
+#include "IOcontrol.hpp"
+#include "pollLib.h"
+#include "clientTable.hpp"
+
+struct client{
+    char handle[HANDLELENGTH];
+    int socket;
+};
