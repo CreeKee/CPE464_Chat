@@ -62,7 +62,7 @@ void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
 	Crowd clientList = clientTable.getClients();
 
     for(int client = 0; client < clientList.count; client++){
-        printf("FLAG sending to %s on port %d\n",clientList.clients[client].handle, clientList.clients[client].socket);
+        printf("FLAG sending to %s on socket %d\n",clientList.clients[client].handle, clientList.clients[client].socket);
         fflush(stdout);
         //if(strcmp(clientList.clients[client].handle,(const char*)senderHandle) != 0){
             //TODO handle return value
