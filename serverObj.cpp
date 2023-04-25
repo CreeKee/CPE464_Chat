@@ -58,7 +58,7 @@ void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
 
     //TODO extract sender's handle
 
-
+    int sent = 0;
 	Crowd clientList = clientTable.getClients();
 
     for(int client = 0; client < clientList.count; client++){
@@ -66,7 +66,14 @@ void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
         fflush(stdout);
         //if(strcmp(clientList.clients[client].handle,(const char*)senderHandle) != 0){
             //TODO handle return value
-            safeSend(clientList.clients[client].socket, PDU, messageLength, 0);
+            sent = safeSend(clientList.clients[client].socket, PDU, messageLength, 0);
+            if (sent < 0)
+            {
+                perror("send call");
+                exit(-1);
+            }
+
+            printf("Amount of data sent is: %d\n", sent);
         //}
         printf("FLAG sent1\n");
         fflush(stdout);
