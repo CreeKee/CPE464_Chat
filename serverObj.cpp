@@ -57,6 +57,8 @@ void Server::processPDU(int socket){
 void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
 
     //TODO extract sender's handle
+    printf("FLAG cascading\n");
+    fflush(stdout);
 
 	Crowd clientList = clientTable.getClients();
 
@@ -69,7 +71,7 @@ void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
 }
 
 void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength){
-    printf("parsing");
+    printf("FLAG parsing\n");
     fflush(stdout);
     //TODO extract flag
     (this->*flagActions[0/*getFlag(PDU)*/])(PDU, messageLength);
