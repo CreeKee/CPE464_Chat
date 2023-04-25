@@ -29,11 +29,10 @@ int main(int argc, char * argv[])
 	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
 	
 
-	    //create poll
+	//create poll
 	setupPollSet();
-	int serverSock = atoi(argv[2]);
 	//add server socket to poll set to listen for new connections
-	addToPollSet(serverSock);
+	addToPollSet(socketNum);
 
 	sendToServer(socketNum);
 	while(1){
