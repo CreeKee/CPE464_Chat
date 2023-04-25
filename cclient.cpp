@@ -31,9 +31,9 @@ int main(int argc, char * argv[])
 
 	    //create poll
 	setupPollSet();
-	
+	int serverSock = atoi(argv[2]);
 	//add server socket to poll set to listen for new connections
-	addToPollSet(atoi(argv[2]));
+	addToPollSet(serverSock);
 
 	sendToServer(socketNum);
 	while(1){
