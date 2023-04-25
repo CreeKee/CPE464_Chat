@@ -25,6 +25,7 @@ void prependLength(uint8_t* dataBuffer, int lengthOfData){
         exit(-1);
     }
     *(uint16_t*)PDU = htons(fullLen);
+    printf("length check2 %d\n",ntohs(*(uint16_t*)PDU)-LENGTHFIELD);
     printf("converted len = %d\n",htons(fullLen));
     memcpy(PDU+LENGTHFIELD, dataBuffer, lengthOfData);
 
