@@ -69,7 +69,8 @@ void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
 }
 
 void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength){
-
+    printf("parsing");
+    fflush(stdout);
     //TODO extract flag
     (this->*flagActions[0/*getFlag(PDU)*/])(PDU, messageLength);
 }

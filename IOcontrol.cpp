@@ -18,8 +18,6 @@ void prependLength(uint8_t* dataBuffer, int lengthOfData){
     int fullLen = lengthOfData+LENGTHFIELD;
     uint8_t* PDU = (uint8_t*)sCalloc(fullLen,sizeof(uint8_t));
 
-    printf("fullLen = %d\n",fullLen);
-
     if(fullLen > MAXBUF){
         perror("PDU too long after length appended\n");
         exit(-1);

@@ -46,7 +46,6 @@ void sendToServer(int socketNum)
 	printf("read: %s string len: %d (including null)\n", sendBuf, sendLen);
 	
 	prependLength(sendBuf,sendLen);
-	printf("length check %d\n",ntohs(*(uint16_t*)sendBuf)-LENGTHFIELD);
 	sent = safeSend(socketNum, sendBuf, sendLen+LENGTHFIELD, 0) - LENGTHFIELD;
 	if (sent < 0)
 	{
