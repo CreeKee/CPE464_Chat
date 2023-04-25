@@ -57,22 +57,19 @@ void Server::processPDU(int socket){
 void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
 
     //TODO extract sender's handle
-    printf("FLAG cascading\n");
-    fflush(stdout);
+
 
 	Crowd clientList = clientTable.getClients();
 
-    printf("FLAG got crowd\n");
-    fflush(stdout);
-
     for(int client = 0; client < clientList.count; client++){
-        printf("FLAG sending\n");
-        fflush(stdout);
+
         //if(strcmp(clientList.clients[client].handle,(const char*)senderHandle) != 0){
             //TODO handle return value
             safeSend(clientList.clients[client].socket, PDU, messageLength, 0);
         //}
     }
+    printf("FLAG sent\n");
+        fflush(stdout);
 }
 
 void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength){
