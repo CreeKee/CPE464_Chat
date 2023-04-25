@@ -1,5 +1,12 @@
 #include "includes.hpp"
 #include "serverOBJ.hpp"
+#include "safeUtil.h"
+#include "networks.h"
+#include "IOcontrol.hpp"
+#include "pollLib.h"
+#include "clientTable.hpp"
+
+
 
 int main(int argc, char *argv[])
 {
@@ -11,13 +18,13 @@ int main(int argc, char *argv[])
 	portNumber = checkArgs(argc, argv);
 	
 	//create the server socket
-	mainServerSocket = tcpServerSetup(portNumber);
+	Server mainServer(portNumber);
 
 	// wait for client to connect
 	//clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
-
-	initializeServer(mainServerSocket);
-	runServer();
+	while(1){
+		mainServer.serverAction();
+	}
 	
 	/* close the sockets */
 	close(clientSocket);
@@ -27,44 +34,21 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void initializeServer(int serverSocket){
+int checkArgs(int argc, char *argv[])
+{
+	// Checks args and returns port number
+	int portNumber = 0;
 
-	//create poll
-	setupPollSet();
-	
-	//add server socket to poll set to listen for new connections
-	addToPollSet(serverSocket);
-}
-
-void runServer(){
-	
-	//TODO
-
-}
-
-void processPDU(int socket){
-
-	uint8_t dataBuffer[MAXBUF];
-	int messageLen = 0;
-	
-	//get data from clientSocket
-	if ((messageLen = recvPDU(socket, dataBuffer, MAXBUF)) < 0)
+	if (argc > 2)
 	{
-		perror("recv call");
+		fprintf(stderr, "Usage %s [optional port number]\n", argv[0]);
 		exit(-1);
 	}
-
-	//check for disconnection
-	if (messageLen > 0)
+	
+	if (argc == 2)
 	{
-		//parsePDU();
-		cascadeB(dataBuffer);
+		portNumber = atoi(argv[1]);
 	}
-	else
-	{
-		printf("Connection closed by other side\n");
-		removeFromPollSet(socket);
-	}
-	return;
+	
+	return portNumber;
 }
-

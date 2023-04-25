@@ -13,11 +13,12 @@
 #include <netdb.h>
 #include <stdint.h>
 
-#include "safeUtil.h"
-#include "networks.h"
-#include "IOcontrol.hpp"
-#include "pollLib.h"
-#include "clientTable.hpp"
+#define MAXBUF 1024
+#define DEBUG_FLAG 1
+
+#define HANDLELENGTH 100
+#define DEFAULTSIZE 100
+#define SIZETHRESH 0.5
 
 struct client{
     char handle[HANDLELENGTH];

@@ -1,23 +1,36 @@
 #include "includes.hpp"
 #include "crowd.hpp"
 #include "clientTable.hpp"
+#include "safeUtil.h"
+#include "networks.h"
+#include "IOcontrol.hpp"
+#include "pollLib.h"
+
+#define FLAGCOUNT 13
 
 #ifndef SERVER_H
 #define SERVER_H
 
-#define HANDLELENGTH 100
-#define DEFAULTSIZE 100
-#define SIZETHRESH 0.5
-
 
 
 class Server{
+
     private:
+    void (Server::*flagActions[FLAGCOUNT])(uint8_t[], int ) = {
+        cascadeB, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag, errorFlag};
     Clientele clientTable;
+    int serverSocket;
 
+    void cascadeB(uint8_t PDU[MAXBUF], int messageLength);
+    void parsePDU(uint8_t PDU[MAXBUF], int messageLength);
+    void errorFlag(uint8_t PDU[MAXBUF], int messageLength);
+    void processPDU(int socket);
+    void addNewClient(int socket, char* handle);
+
+    public:
     void serverAction();
-    void cascadeB(uint8_t pdu[MAXBUF], Clientele ClientTable);
-
+    Server(int portnum);
 };
+
 
 #endif
