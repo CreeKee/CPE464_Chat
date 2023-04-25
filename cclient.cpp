@@ -10,6 +10,7 @@
 #include "safeUtil.h"
 #include "networks.h"
 #include "IOcontrol.hpp"
+#include "pollLib.h"
 
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
@@ -21,14 +22,26 @@ void checkArgs(int argc, char * argv[]);
 int main(int argc, char * argv[])
 {
 	int socketNum = 0;         //socket descriptor
-	
+	int action;
 	checkArgs(argc, argv);
 
 	/* set up the TCP Client socket  */
 	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
+	
+
+	    //create poll
+	setupPollSet();
+	
+	//add server socket to poll set to listen for new connections
+	addToPollSet(socketNum);
+
 	sendToServer(socketNum);
 	while(1){
 		//TODO
+		if((action = pollCall(-1)) != -1){
+
+			printf("got something from the server\n");
+    	}
 	}
 	
 	close(socketNum);
