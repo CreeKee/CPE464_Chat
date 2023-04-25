@@ -39,6 +39,7 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
     //convert message length from network order to host order
     dataLength = ntohs(*(uint16_t*)dataBuffer)-LENGTHFIELD;
+    printf("recieve packet with length field: %d\n", dataLength);
 
     //check for disconnection
     if(retval != 0){
