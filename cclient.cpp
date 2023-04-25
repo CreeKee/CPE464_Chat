@@ -33,14 +33,14 @@ int main(int argc, char * argv[])
 	setupPollSet();
 	
 	//add server socket to poll set to listen for new connections
-	addToPollSet(socketNum);
+	addToPollSet(atoi(argv[2]));
 
 	sendToServer(socketNum);
 	while(1){
 		//TODO
 		if((action = pollCall(-1)) != -1){
 
-			printf("got something from the server\n");
+			printf("recieved action %d\n", action);
     	}
 	}
 	
