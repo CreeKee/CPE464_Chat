@@ -129,7 +129,7 @@ void sendHandshake(int serverSocket, char* handle){
 	printf("prepping %s with length %d\n", handle, hLen);
 	
 	buffer[0] = hLen;
-	memcpy(buffer+1, handle, hLen);
+	memcpy(buffer+1, handle, hLen+1);
 	sendPDU(serverSocket, buffer, hLen+1, FLAG_NEWCLIENT);
 
 }
