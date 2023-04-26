@@ -7,6 +7,8 @@
 #include "pollLib.h"
 
 #define FLAGCOUNT 13
+#define FLAGOFFSET 2
+
 
 #ifndef SERVER_H
 #define SERVER_H
@@ -22,6 +24,8 @@ class Server{
     int serverSocket;
 
     void cascadeB(uint8_t PDU[MAXBUF], int messageLength);
+    void handshake(int clientSock, int flag);
+
     void parsePDU(uint8_t PDU[MAXBUF], int messageLength);
     void errorFlag(uint8_t PDU[MAXBUF], int messageLength);
     void processPDU(int socket);
