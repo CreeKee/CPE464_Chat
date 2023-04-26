@@ -130,6 +130,6 @@ void sendHandshake(int serverSocket, char* handle){
 	
 	buffer[0] = hLen;
 	memcpy(buffer+1, handle, hLen);
-	sendPDU(serverSocket, buffer, FLAG_NEWCLIENT);
+	sendPDU(serverSocket, buffer, hLen+1, FLAG_NEWCLIENT);
 
 }

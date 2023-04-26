@@ -91,11 +91,11 @@ void Server::handshake(FLAGACTION){
     memcpy(handle, PDU+HANDLE_POS, PDU[HANDLELENGTH_POS]);
     printf("attempting to add new client with handle [%s]\n", handle);
     if(clientTable.insertClient((char*)handle, socket)){
-        sendPDU(socket, buffer, FLAG_ACCEPTCLIENT);
+        sendPDU(socket, buffer,0, FLAG_ACCEPTCLIENT);
     }
     else{
         //TODO
-        sendPDU(socket, buffer, FLAG_REJECTCLIENT);
+        sendPDU(socket, buffer,0, FLAG_REJECTCLIENT);
         printf("client tried to join with invalid handle");
     }
 

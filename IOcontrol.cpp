@@ -1,9 +1,9 @@
 #include "IOcontrol.hpp"
 
 
-void sendPDU(int clientSocket, uint8_t* dataBuffer, int flag){
+void sendPDU(int clientSocket, uint8_t* dataBuffer, int datalength, int flag){
 
-    if (safeSend(clientSocket, dataBuffer, addChatHeader(dataBuffer, 0, flag), 0) < 0)
+    if (safeSend(clientSocket, dataBuffer, addChatHeader(dataBuffer, datalength, flag), 0) < 0)
     {
         perror("send call");
         exit(-1);
