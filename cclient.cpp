@@ -112,7 +112,7 @@ void checkArgs(int argc, char * argv[])
 		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
 	}
-	if(strlen(argv[3]) > HANDLELENGTH){
+	if(strlen(argv[3]) > HANDLELENGTH-1){
 		printf("handle [%s] too long\n",argv[4]);
 		exit(-1);
 	}
@@ -129,7 +129,7 @@ void sendHandshake(int serverSocket, char* handle){
 
 	
 	buffer[0] = hLen;
-	memcpy(buffer+1, handle, hLen+1);
+	memcpy(buffer+1, handle, hLen);
 	sendPDU(serverSocket, buffer, FLAG_NEWCLIENT);
 
 }

@@ -8,6 +8,9 @@
 
 #define FLAGCOUNT 13
 #define FLAGOFFSET 2
+#define HANDLELENGTH_POS 3
+#define HANDLE_POS 4
+#define FLAGACTION uint8_t PDU[MAXBUF], int messageLength, int socket
 
 
 #ifndef SERVER_H
@@ -18,16 +21,17 @@
 class Server{
 
     private:
-    void (Server::*flagActions[FLAGCOUNT])(uint8_t[], int ) = {
-        &Server::cascadeB, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag};
+    void (Server::*flagActions[FLAGCOUNT])(FLAGACTION) = {
+        &Server::cascadeB, &Server::handshake, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag};
     Clientele clientTable;
     int serverSocket;
 
-    void cascadeB(uint8_t PDU[MAXBUF], int messageLength);
-    void handshake(int clientSock, int flag);
+    void cascadeB(FLAGACTION);
+    void handshake(FLAGACTION);
+    void errorFlag(FLAGACTION);
 
-    void parsePDU(uint8_t PDU[MAXBUF], int messageLength);
-    void errorFlag(uint8_t PDU[MAXBUF], int messageLength);
+    void parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket);
+    
     void processPDU(int socket);
     void addNewClient(int socket, char* handle);
     uint8_t readFlag(const uint8_t PDU[MAXBUF]);
