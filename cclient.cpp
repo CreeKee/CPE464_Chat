@@ -112,11 +112,11 @@ void checkArgs(int argc, char * argv[])
 		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
 	}
-	if(strlen(argv[4]) > HANDLELENGTH){
+	if(strlen(argv[3]) > HANDLELENGTH){
 		printf("handle [%s] too long\n",argv[4]);
 		exit(-1);
 	}
-	else if(argv[4][0]<65 || argv[4][0] >122){
+	else if(argv[3][0]<65 || argv[3][0] >122){
 			printf("handle must start with an alphabetical character\n");
 			exit(-1);
 		}
