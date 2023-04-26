@@ -43,8 +43,8 @@ void Server::processPDU(int socket){
 	//check for disconnection
 	if (messageLen > 0)
 	{
-		//parsePDU(dataBuffer, messageLen);
-        safeSend(socket, dataBuffer, messageLen, 0);
+		parsePDU(dataBuffer, messageLen);
+        
 	}
 	else
 	{
