@@ -153,6 +153,6 @@ void Server::addNewClient(int socket, char* handle){
 	return;
 }
 
-uint8_t readFlag(const uint8_t PDU[MAXBUF]){
+uint8_t Server::readFlag(const uint8_t PDU[MAXBUF]){
     return PDU[FLAGOFFSET];
 }
