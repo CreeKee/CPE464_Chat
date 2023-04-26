@@ -23,6 +23,7 @@ int main(int argc, char * argv[])
 {
 	int socketNum = 0;         //socket descriptor
 	int action;
+	uint8_t dataBuffer[MAXBUF];
 	checkArgs(argc, argv);
 
 	/* set up the TCP Client socket  */
@@ -38,7 +39,7 @@ int main(int argc, char * argv[])
 	while(1){
 		//TODO
 		if((action = pollCall(-1)) != -1){
-
+			recvPDU(action, dataBuffer, MAXBUF);
 			printf("recieved action %d\n", action);
     	}
 	}
