@@ -117,12 +117,16 @@ void Server::addNewClient(int socket, char* handle){
 		exit(1);
 	}
 
+    printf("accepted new client\n");
+    fflush(stdout);
+
     if ((len = recvPDU(socket, PDU, MAXBUF)) < 0)
 	{
 		perror("recv call");
 		exit(-1);
 	}
-
+    printf("recieved new client handshake\n");
+    fflush(stdout);
 	//check for disconnection
 	if (len > 0)
 	{
