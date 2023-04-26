@@ -58,30 +58,19 @@ void Server::processPDU(int socket){
 
 void Server::cascadeB(FLAGACTION){
 
-    //TODO extract sender's handle
-
-    int sent = 0;
 	Crowd clientList = clientTable.getClients();
 
     for(int client = 0; client < clientList.count; client++){
         printf("FLAG sending to %s on socket %d\n",clientList.clients[client].handle, clientList.clients[client].socket);
         fflush(stdout);
-        //if(strcmp(clientList.clients[client].handle,(const char*)senderHandle) != 0){
+        if(clientList.clients[client].socket != socket){
             //TODO handle return value
-            sent = safeSend(clientList.clients[client].socket, PDU, messageLength, 0);
-            if (sent < 0)
-            {
-                perror("send call");
-                exit(-1);
-            }
 
-            printf("Amount of data sent is: %d\n", sent);
-        //}
-        printf("FLAG sent1\n");
-        fflush(stdout);
+            forwardPDU(clientList.clients[client].socket, PDU, messageLength);
+                    }
+
     }
-    printf("FLAG sent\n");
-        fflush(stdout);
+
 }
 
 void Server::handshake(FLAGACTION){
@@ -138,3 +127,6 @@ void Server::addNewClient(int socket, char* handle){
 uint8_t Server::readFlag(const uint8_t PDU[MAXBUF]){
     return PDU[FLAGOFFSET];
 }
+
+
+

@@ -11,6 +11,7 @@
 #include "networks.h"
 #include "IOcontrol.hpp"
 #include "pollLib.h"
+#include <algorithm>
 
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
@@ -24,7 +25,7 @@ int main(int argc, char * argv[])
 {
 	int socketNum = 0;         //socket descriptor
 	int action;
-	uint8_t dataBuffer[MAXBUF];
+	
 	checkArgs(argc, argv);
 
 	/* set up the TCP Client socket  */
@@ -44,11 +45,12 @@ int main(int argc, char * argv[])
 
 			switch(action){
 				case STDIN_FILENO:
-					sendToServer(socketNum);
+					createMessage(socketNum);
 					break;
 				default:
-					recvPDU(action, dataBuffer, MAXBUF);
-					printf("->%s\n", dataBuffer+2);
+					recvFromServer(action);
+					
+					
 					break;
 			}
     	}
@@ -57,6 +59,65 @@ int main(int argc, char * argv[])
 	close(socketNum);
 	
 	return 0;
+}
+
+
+void createMessage(int serverSocket){
+	uint8_t buffer[MAXBUF];   //data buffer
+	int sendLen = 0;        //amount of data to send
+	int sent = 0; 
+	sendLen = readFromStdin(buffer);
+
+	if(buffer[0] != '%'){
+		printf("all commands must start with '%'\n");
+	} else if(buffer[2] != ' '){
+		printf("invalid command format");
+	}
+	else switch(tolower(buffer[1])){
+		case 'm':
+			compileCM(buffer+3, sendLen, serverSocket);
+			break;
+		default:
+			printf("unkown command %c%c\n",buffer[0], buffer[1]);
+			break;
+	}
+}
+
+void compileCM(uint8_t buffer[MAXBUF], int buflen, int socket){
+	uint8_t PDU[MAXBUF] = {0};
+	int dataStart = 0;
+	int currlen;
+	uint8_t* splitter = (uint8_t*)strtok((char*)buffer, " ");
+
+	if(splitter != NULL){
+
+		dataStart = splitter-buffer;
+
+		if(dataStart-1 < HANDLELENGTH){
+			
+			for(int shatter = dataStart+1; buflen>shatter; shatter += MAXMSG-1){
+				PDU[0] = (dataStart-1);
+				memcpy(PDU+1, buffer, dataStart-1);
+				currlen = std::min(MAXMSG-1, buflen-shatter);
+				memcpy(PDU+(dataStart), buffer+shatter, currlen);
+				sendPDU(socket, PDU, currlen+dataStart, FLAG_M);
+			}
+
+		}
+		else{
+			printf("input handle is too long\n");
+		}
+	}
+	else{
+		printf("invalid M formatting\n");
+	}
+	
+}
+
+void recvFromServer(int serverSock){
+	uint8_t dataBuffer[MAXBUF];
+	recvPDU(serverSock, dataBuffer, MAXBUF);
+	printf("->%s\n", dataBuffer+2);
 }
 
 void sendToServer(int socketNum)

@@ -1,6 +1,14 @@
 #include "IOcontrol.hpp"
 
 
+void forwardPDU(int sock, uint8_t PDU[MAXBUF], int len){
+    if(safeSend(sock, PDU, len, 0) < 0)
+    {
+        perror("send call");
+        exit(-1);
+    }
+}
+
 void sendPDU(int clientSocket, uint8_t* dataBuffer, int datalength, int flag){
 
     if (safeSend(clientSocket, dataBuffer, addChatHeader(dataBuffer, datalength, flag), 0) < 0)
