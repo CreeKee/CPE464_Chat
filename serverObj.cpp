@@ -108,8 +108,8 @@ void Server::addNewClient(int socket, char* handle){
 		//current behavior for failed accept it to exit.
 		exit(1);
 	}
-    if(clientTable.insertClient(handle, socket)){
-        printf("just inserted %d, reading back %d\n",socket, clientTable.getClientPort("test handle"));
+    if(clientTable.insertClient(handle, sock)){
+        printf("just inserted %d, reading back %d\n",sock, clientTable.getClientPort("test handle"));
         Crowd ccc = clientTable.getClients();
         printf("just got a crowd with %d members, reading of [%s] socket:%d\n", ccc.count,ccc.clients[0].handle, ccc.clients[0].socket);
 	    addToPollSet(sock);
