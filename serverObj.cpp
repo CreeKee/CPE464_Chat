@@ -83,7 +83,7 @@ void Server::forwardM(FLAGACTION){
     }
     else{
         
-        printf("%M to invalid client\n");
+        printf("%M to invalid client [%s]\n", targetHandle);
     }
 
     

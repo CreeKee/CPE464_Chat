@@ -69,7 +69,7 @@ void createMessage(int serverSocket){
 	int sendLen = 0;        //amount of data to send
 	int sent = 0; 
 	sendLen = readFromStdin(buffer);
-
+	printf("readback: %s <->%s\n",buffer, buffer+3);
 	if(buffer[0] != '%'){
 		printf("all commands must start with '%'\n");
 	} else if(buffer[2] != ' '){
