@@ -18,6 +18,7 @@
 void sendToServer(int socketNum);
 int readFromStdin(uint8_t * buffer);
 void checkArgs(int argc, char * argv[]);
+void sendHandshake(int serverSocket, char* handle);
 
 int main(int argc, char * argv[])
 {
@@ -28,7 +29,7 @@ int main(int argc, char * argv[])
 
 	/* set up the TCP Client socket  */
 	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
-	
+	sendHandshake(socketNum, argv[3]);
 
 	//create poll
 	setupPollSet();
@@ -106,9 +107,34 @@ int readFromStdin(uint8_t * buffer)
 void checkArgs(int argc, char * argv[])
 {
 	/* check command line arguments  */
-	if (argc != 3)
+	if (argc != 4)
 	{
-		printf("usage: %s host-name port-number \n", argv[0]);
+		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
 	}
+}
+
+void sendHandshake(int serverSocket, char* handle){
+
+	uint8_t buffer[MAXBUF];
+	uint32_t hLen = strlen(handle);
+
+	if(hLen > HANDLELENGTH){
+		//TODO magic num
+		if(handle[0]<65 || handle[0] >122){
+			printf("handle must start with an alphabetical character\n");
+			exit(-1);
+		}
+		else{
+			buffer[0] = hLen;
+			memcpy(buffer+1, handle, hLen+1);
+			sendPDU(serverSocket, buffer, FLAG_NEWCLIENT);
+
+		}
+	}
+	else{
+		printf("handle too long\n");
+		exit(-1);
+	}
+
 }

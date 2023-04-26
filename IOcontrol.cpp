@@ -1,16 +1,13 @@
 #include "IOcontrol.hpp"
 
 
-int sendPDU(int clientSocket, uint8_t* dataBuffer){
+void sendPDU(int clientSocket, uint8_t* dataBuffer, int flag){
 
-    int retval = 0;
-    
-
-    //retval = safeSend(clientSocket, PDU, fullLen, 0);
-
-    
-
-    return retval-LENGTHFIELD;
+    if (safeSend(clientSocket, dataBuffer, addChatHeader(dataBuffer, 0, flag), 0) < 0)
+    {
+        perror("send call");
+        exit(-1);
+    }
 }
 
 void prependLength(uint8_t* dataBuffer, int lengthOfData){
@@ -53,4 +50,21 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
     }
 
     return retval+LENGTHFIELD;
+}
+
+int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
+    int fullLen = lengthOfData+CHATLENGTH;
+    uint8_t* PDU = (uint8_t*)sCalloc(fullLen,sizeof(uint8_t));
+
+    if(fullLen > MAXBUF){
+        perror("PDU too long after length appended\n");
+        exit(-1);
+    }
+    *(uint16_t*)PDU = htons(fullLen);
+    *(uint16_t*)(PDU+2) = flag;
+
+    memcpy(PDU+CHATLENGTH, dataBuffer, lengthOfData);
+    memcpy(dataBuffer, PDU, fullLen);
+    free(PDU);
+    return fullLen;
 }

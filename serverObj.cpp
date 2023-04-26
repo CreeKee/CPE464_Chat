@@ -84,6 +84,13 @@ void Server::cascadeB(uint8_t PDU[MAXBUF], int messageLength){
         fflush(stdout);
 }
 
+void Server::handshake(int clientSock, int flag){
+    uint8_t dataBuffer[MAXBUF];
+    
+    sendPDU(clientSock, dataBuffer, flag);
+
+}
+
 void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength){
     printf("FLAG parsing\n");
     fflush(stdout);
@@ -99,6 +106,8 @@ void Server::errorFlag(uint8_t PDU[MAXBUF], int messageLength){
 void Server::addNewClient(int socket, char* handle){
 	
 	int sock;
+    int len;
+    uint8_t PDU[MAXBUF];
 
 	//add new socket to the poll
 	if((sock = tcpAccept(serverSocket, DEBUG_FLAG)) == -1){
@@ -107,14 +116,43 @@ void Server::addNewClient(int socket, char* handle){
 		//current behavior for failed accept it to exit.
 		exit(1);
 	}
-    if(clientTable.insertClient(handle, sock)){
-        Crowd ccc = clientTable.getClients();
-	    addToPollSet(sock);
-    }
-    else{
-        //TODO
-        perror("client tried to join with invalid handle");
-    }
+
+    if ((len = recvPDU(socket, PDU, MAXBUF)) < 0)
+	{
+		perror("recv call");
+		exit(-1);
+	}
+
+	//check for disconnection
+	if (len > 0)
+	{
+        if(readFlag(PDU) == FLAG_NEWCLIENT){
+            if(clientTable.insertClient(handle, sock)){
+                addToPollSet(sock);
+                handshake(socket, FLAG_ACCEPTCLIENT);
+            }
+            else{
+                //TODO
+                handshake(socket, FLAG_REJECTCLIENT);
+                printf("client tried to join with invalid handle");
+            }
+        }
+        else{
+            printf("client send invalid handshake\n");
+            //TODO error check
+            close(socket);
+        }
+	}
+	else
+	{
+		printf("Connection closed by other side before sending 01 flag\n");
+	}
+
+
     
 	return;
+}
+
+uint8_t readFlag(const uint8_t PDU[MAXBUF]){
+    return PDU[FLAGOFFSET];
 }

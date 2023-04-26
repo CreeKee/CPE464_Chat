@@ -24,8 +24,6 @@ int main(int argc, char *argv[])
 	//clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
 	while(1){
 		mainServer.serverAction();
-		printf("FLAG confused\n");
-    	fflush(stdout);
 	}
 	
 	/* close the sockets */
