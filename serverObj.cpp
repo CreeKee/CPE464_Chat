@@ -91,7 +91,6 @@ void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength){
     (this->*flagActions[0/*getFlag(PDU)*/])(PDU, messageLength);
 }
 
-
 void Server::errorFlag(uint8_t PDU[MAXBUF], int messageLength){
     perror("server recieved PDU with an invalid flag\n");
     exit(-1);
@@ -109,9 +108,7 @@ void Server::addNewClient(int socket, char* handle){
 		exit(1);
 	}
     if(clientTable.insertClient(handle, sock)){
-        printf("just inserted %d, reading back %d\n",sock, clientTable.getClientPort("test handle"));
         Crowd ccc = clientTable.getClients();
-        printf("just got a crowd with %d members, reading of [%s] socket:%d\n", ccc.count,ccc.clients[0].handle, ccc.clients[0].socket);
 	    addToPollSet(sock);
     }
     else{

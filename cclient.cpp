@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
 			switch(action){
 				case STDIN_FILENO:
 					sendToServer(socketNum);
-
+					break;
 				default:
 					recvPDU(action, dataBuffer, MAXBUF);
 					printf("->%s\n", dataBuffer+2);

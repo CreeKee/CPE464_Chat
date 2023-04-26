@@ -19,13 +19,11 @@ bool Clientele::insertClient(const char* handle, int socket){
         hashVal = (hashVal+1)%size;
     }
     if(valid){
-        printf("adding new client to table with handle: %s hash %d, socket %d\n", handle, hashVal, socket);
         clients[hashVal] = new client;
         memcpy(clients[hashVal]->handle, handle, HANDLELENGTH);
         clients[hashVal]->socket = socket;
         clientCount++;
         fillCheck();
-        printf("checking new client %s, socket %d\n", clients[hashVal]->handle, clients[hashVal]->socket);
     }
     return valid;
 }
