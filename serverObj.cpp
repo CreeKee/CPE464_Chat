@@ -109,6 +109,7 @@ void Server::addNewClient(int socket, char* handle){
 		exit(1);
 	}
     if(clientTable.insertClient(handle, socket)){
+        printf("just inserted %d, reading back %d\n",socket, clientTable.getClientPort("test"));
 	    addToPollSet(sock);
     }
     else{
