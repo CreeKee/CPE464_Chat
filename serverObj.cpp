@@ -15,8 +15,7 @@ Server::Server(int portnum){
 
 void Server::serverAction(){
     int action;
-    int len;
-    uint8_t dataBuffer[MAXBUF];
+
     //poll all current sockets
     if((action = pollCall(-1)) != -1){
 
@@ -24,9 +23,7 @@ void Server::serverAction(){
             addNewClient(serverSocket, "test handle");
         }
         else{
-            //processPDU(action);
-            len = recvPDU(action, dataBuffer, MAXBUF);
-            safeSend(action, dataBuffer, len+2, 0);
+            processPDU(action);
         }
     }
 }
@@ -46,7 +43,8 @@ void Server::processPDU(int socket){
 	//check for disconnection
 	if (messageLen > 0)
 	{
-		parsePDU(dataBuffer, messageLen);
+		//parsePDU(dataBuffer, messageLen);
+        safeSend(socket, dataBuffer, messageLen, 0);
 	}
 	else
 	{

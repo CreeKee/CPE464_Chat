@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
 
 				default:
 					recvPDU(action, dataBuffer, MAXBUF);
-					printf("%s\n", dataBuffer+2);
+					printf("->%s\n", dataBuffer+2);
 					break;
 			}
     	}
