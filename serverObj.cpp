@@ -64,13 +64,18 @@ void Server::cascadeB(FLAGACTION){
         printf("FLAG sending to %s on socket %d\n",clientList.clients[client].handle, clientList.clients[client].socket);
         fflush(stdout);
         if(clientList.clients[client].socket != socket){
-            //TODO handle return value
 
             forwardPDU(clientList.clients[client].socket, PDU, messageLength);
-                    }
+        }
 
     }
 
+}
+
+void Server::forwardM(FLAGACTION){
+    uint8_t targetHandle[HANDLELENGTH+1] = {0};
+    memcpy(targetHandle, PDU+HANDLE_POS, PDU[HANDLELENGTH_POS]);
+    forwardPDU(clientTable.getClientPort((char*)targetHandle), PDU, messageLength);
 }
 
 void Server::handshake(FLAGACTION){

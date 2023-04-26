@@ -22,11 +22,17 @@ class Server{
 
     private:
     void (Server::*flagActions[FLAGCOUNT])(FLAGACTION) = {
-        &Server::cascadeB, &Server::handshake, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, &Server::errorFlag};
+        &Server::cascadeB, &Server::handshake, &Server::errorFlag, 
+        &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, 
+        &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, 
+        &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, 
+        &Server::errorFlag};
+        
     Clientele clientTable;
     int serverSocket;
 
     void cascadeB(FLAGACTION);
+    void forwardM(FLAGACTION);
     void handshake(FLAGACTION);
     void errorFlag(FLAGACTION);
 
