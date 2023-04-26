@@ -126,7 +126,7 @@ void sendHandshake(int serverSocket, char* handle){
 
 	uint8_t buffer[MAXBUF];
 	uint32_t hLen = strlen(handle);
-
+	printf("prepping %s with length %d\n", handle, hLen);
 	
 	buffer[0] = hLen;
 	memcpy(buffer+1, handle, hLen);
