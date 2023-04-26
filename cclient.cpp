@@ -104,7 +104,7 @@ void compileCM(uint8_t buffer[MAXBUF], int buflen, int socket){
 				PDU[0] = (dataStart-1);
 				memcpy(PDU+1, buffer, dataStart);
 				currlen = std::min(MAXMSG-1, buflen-shatter);
-				memcpy(PDU+(dataStart), buffer+shatter, currlen);
+				memcpy(PDU+(dataStart+1), buffer+shatter, currlen);
 				sendPDU(socket, PDU, currlen+dataStart, FLAG_M);
 			}
 
