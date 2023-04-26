@@ -77,6 +77,8 @@ void createMessage(int serverSocket){
 	}
 	else switch(tolower(buffer[1])){
 		case 'm':
+			printf("compiling CM\n");
+			fflush(stdout);
 			compileCM(buffer+3, sendLen, serverSocket);
 			break;
 		default:
@@ -149,7 +151,6 @@ int readFromStdin(uint8_t * buffer)
 	
 	// Important you don't input more characters than you have space 
 	buffer[0] = '\0';
-	printf("Enter data: ");
 	while (inputLen < (MAXBUF - 1) && aChar != '\n')
 	{
 		aChar = getchar();

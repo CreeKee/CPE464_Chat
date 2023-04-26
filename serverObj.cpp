@@ -74,8 +74,19 @@ void Server::cascadeB(FLAGACTION){
 
 void Server::forwardM(FLAGACTION){
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
+    int destPort;
     memcpy(targetHandle, PDU+HANDLE_POS, PDU[HANDLELENGTH_POS]);
-    forwardPDU(clientTable.getClientPort((char*)targetHandle), PDU, messageLength);
+
+    //TODO confirmations
+    if((destPort = clientTable.getClientPort((char*)targetHandle))!=-1){
+        forwardPDU(destPort, PDU, messageLength);
+    }
+    else{
+        
+        printf("%M to invalid client\n");
+    }
+
+    
 }
 
 void Server::handshake(FLAGACTION){
