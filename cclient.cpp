@@ -89,7 +89,7 @@ void compileCM(uint8_t buffer[MAXBUF], int buflen, int socket){
 	uint8_t PDU[MAXBUF] = {0};
 	int dataStart = 0;
 	int currlen;
-	uint8_t* splitter = (uint8_t*)strtok((char*)buffer, " ");
+	uint8_t* splitter = (uint8_t*)strchr((char*)buffer, ' ');
 
 	printf("got splitter: %s\n", buffer);
 	fflush(stdout);
