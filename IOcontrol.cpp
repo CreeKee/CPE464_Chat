@@ -65,6 +65,7 @@ int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
 
     memcpy(PDU+CHATLENGTH, dataBuffer, lengthOfData);
     memcpy(dataBuffer, PDU, fullLen);
+    printf("verifying %s\n",PDU+4);
     free(PDU);
     return fullLen;
 }
