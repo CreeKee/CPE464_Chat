@@ -41,7 +41,6 @@ int main(int argc, char * argv[])
 	addToPollSet(socketNum);
 	addToPollSet(STDIN_FILENO);
 
-	sendToServer(socketNum);
 	while(1){
 		//TODO
 		if((action = pollCall(-1)) != -1){
