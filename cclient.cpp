@@ -101,7 +101,7 @@ void compileCM(uint8_t buffer[MAXBUF], int buflen, int socket){
 		if(dataStart-1 < HANDLELENGTH){
 			
 			for(int shatter = dataStart+1; buflen>shatter; shatter += MAXMSG-1){
-				PDU[0] = (dataStart-1);
+				PDU[0] = (dataStart);
 				memcpy(PDU+1, buffer, dataStart);
 				currlen = std::min(MAXMSG-1, buflen-shatter);
 				memcpy(PDU+(dataStart+1), buffer+shatter, currlen);
