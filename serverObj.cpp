@@ -89,7 +89,7 @@ void Server::handshake(FLAGACTION){
     uint8_t buffer[MAXBUF];
 
     memcpy(handle, PDU+HANDLE_POS, PDU[HANDLELENGTH_POS]);
-
+    printf("attempting to add new client with handle [%s]\n", handle);
     if(clientTable.insertClient((char*)handle, socket)){
         sendPDU(socket, buffer, FLAG_ACCEPTCLIENT);
     }
