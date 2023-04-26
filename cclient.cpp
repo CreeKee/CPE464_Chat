@@ -34,13 +34,22 @@ int main(int argc, char * argv[])
 	setupPollSet();
 	//add server socket to poll set to listen for new connections
 	addToPollSet(socketNum);
+	addToPollSet(STDIN_FILENO);
 
 	sendToServer(socketNum);
 	while(1){
 		//TODO
 		if((action = pollCall(-1)) != -1){
-			recvPDU(action, dataBuffer, MAXBUF);
-			printf("recieved action %d\n", action);
+
+			switch(action){
+				case STDIN_FILENO:
+					sendToServer(socketNum);
+
+				default:
+					recvPDU(action, dataBuffer, MAXBUF);
+					printf("%s\n", dataBuffer+2);
+					break;
+			}
     	}
 	}
 	
