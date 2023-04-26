@@ -77,8 +77,6 @@ void createMessage(int serverSocket){
 	}
 	else switch(tolower(buffer[1])){
 		case 'm':
-			printf("compiling CM\n");
-			fflush(stdout);
 			compileCM(buffer+3, sendLen, serverSocket);
 			break;
 		default:
@@ -92,6 +90,9 @@ void compileCM(uint8_t buffer[MAXBUF], int buflen, int socket){
 	int dataStart = 0;
 	int currlen;
 	uint8_t* splitter = (uint8_t*)strtok((char*)buffer, " ");
+
+	printf("got splitter: %s\n", buffer);
+	fflush(stdout);
 
 	if(splitter != NULL){
 
