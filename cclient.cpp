@@ -16,8 +16,11 @@
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
 
+void compileCM(uint8_t buffer[MAXBUF], int buflen, int socket);
+void createMessage(int serverSocket);
 void sendToServer(int socketNum);
 int readFromStdin(uint8_t * buffer);
+void recvFromServer(int serverSock);
 void checkArgs(int argc, char * argv[]);
 void sendHandshake(int serverSocket, char* handle);
 
