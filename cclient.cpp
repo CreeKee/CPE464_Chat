@@ -112,6 +112,14 @@ void checkArgs(int argc, char * argv[])
 		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
 	}
+	if(strlen(argv[4]) > HANDLELENGTH){
+		printf("handle [%s] too long\n",argv[4]);
+		exit(-1);
+	}
+	else if(argv[4][0]<65 || argv[4][0] >122){
+			printf("handle must start with an alphabetical character\n");
+			exit(-1);
+		}
 }
 
 void sendHandshake(int serverSocket, char* handle){
@@ -119,22 +127,9 @@ void sendHandshake(int serverSocket, char* handle){
 	uint8_t buffer[MAXBUF];
 	uint32_t hLen = strlen(handle);
 
-	if(hLen > HANDLELENGTH){
-		//TODO magic num
-		if(handle[0]<65 || handle[0] >122){
-			printf("handle must start with an alphabetical character\n");
-			exit(-1);
-		}
-		else{
-			buffer[0] = hLen;
-			memcpy(buffer+1, handle, hLen+1);
-			sendPDU(serverSocket, buffer, FLAG_NEWCLIENT);
-
-		}
-	}
-	else{
-		printf("handle too long\n");
-		exit(-1);
-	}
+	
+	buffer[0] = hLen;
+	memcpy(buffer+1, handle, hLen+1);
+	sendPDU(serverSocket, buffer, FLAG_NEWCLIENT);
 
 }
