@@ -43,6 +43,7 @@ void Server::processPDU(int socket){
 	//check for disconnection
 	if (messageLen > 0)
 	{
+        printf("socket: %d\n", socket);
 		parsePDU(dataBuffer, messageLen);
         
 	}
