@@ -55,7 +55,7 @@ void Client::createMessage(){
 			break;
 
 		case 'b':
-			//compileB(buffer+3, sendLen);
+			compileB(buffer+3, sendLen);
 			break;
 
 		default:
