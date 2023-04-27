@@ -109,10 +109,10 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     memcpy(PDU+1, handle, myhLen);
     PDU[myhLen+1] = dstCount;
 
-    dataStart += myhLen+2;
+    dataStart += myhLen+3;
 
     for(int dest = 0; dest < dstCount && check >=0; dest++){
-        dataStart += (check = appendHandle((PDU+dataStart),buffer));
+        dataStart += (check = appendHandle((PDU+dataStart),buffer))+1;
         buflen -= check;
     }
 
@@ -125,6 +125,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 }
 
 void Client::fragment(uint8_t PDU[MAXBUF], uint8_t buffer[MAXBUF], int buflen, int dataStart, int flag){
+    
     int currlen;
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
