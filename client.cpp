@@ -75,13 +75,12 @@ int Client::appendHandle(uint8_t* PDU, uint8_t* buffer){
 	int offset = 0;
 
 	if(splitter != NULL){
-		offset = splitter-buffer+1;
+		offset = splitter-buffer;
 
 		if(offset < HANDLELENGTH){
-			insertHandle(PDU, buffer, offset-1);
-			PDU[0] = offset-1;
-			memcpy(PDU+1, buffer, offset-1);
-			buffer+=offset;
+			PDU[0] = offset;
+			memcpy(PDU+1, buffer, offset);
+			buffer+=offset+1;
 		}
 		else{
 			offset = -2;
@@ -112,7 +111,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     dataStart += myhLen+2;
 
     for(int dest = 0; dest < dstCount && check >=0; dest++){
-        dataStart += (check = appendHandle((PDU+dataStart),buffer))+1;
+        dataStart += (check = appendHandle((PDU+dataStart),buffer));
         buflen -= check;
     }
 
@@ -126,6 +125,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
 void Client::fragment(uint8_t PDU[MAXBUF], uint8_t buffer[MAXBUF], int buflen, int dataStart, int flag){
     
+    //TODO broken
     int currlen;
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
@@ -138,10 +138,16 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t buffer[MAXBUF], int buflen, i
 
 
 
-/*
-void Client::compileB(uint8_t buffer[MAXBUF], int buflen, int socket){
-	insertHandle(PDU, buffer, dataStart);
-}*/
+
+void Client::compileB(uint8_t buffer[MAXBUF], int buflen){
+	
+    uint8_t PDU[MAXBUF] = {0};
+    
+    PDU[0] = myhLen;
+    memcpy(PDU+1, handle, myhLen);
+
+    fragment(PDU, buffer, buflen, 0, FLAG_B);
+}
 
 void Client::recvFromServer(int serverSock){
 	uint8_t dataBuffer[MAXBUF];

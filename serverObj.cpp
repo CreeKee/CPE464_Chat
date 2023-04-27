@@ -75,6 +75,8 @@ void Server::cascadeB(FLAGACTION){
 void Server::forwardM(FLAGACTION){
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
     int destPort;
+    
+    //TODO magic nums
     memcpy(targetHandle, PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2, PDU[HANDLELENGTH_POS+PDU[HANDLELENGTH_POS]+2]);
 
     //TODO confirmations
