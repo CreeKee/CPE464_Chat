@@ -41,8 +41,6 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
     //recieve incoming PDU length
     int retval = safeRecv(socketNumber, dataBuffer, LENGTHFIELD, MSG_WAITALL);
-    
-    
 
     //check for disconnection
     if(retval != 0){
