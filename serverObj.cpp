@@ -75,7 +75,7 @@ void Server::cascadeB(FLAGACTION){
 void Server::forwardM(FLAGACTION){
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
     int destPort;
-    memcpy(targetHandle, PDU+HANDLE_POS+PDU[HANDLELENGTH_POS], PDU[HANDLELENGTH_POS+PDU[HANDLELENGTH_POS]]+1);
+    memcpy(targetHandle, PDU+HANDLE_POS+PDU[HANDLELENGTH_POS], PDU[HANDLELENGTH_POS+PDU[HANDLELENGTH_POS]+1]);
 
     //TODO confirmations
     if((destPort = clientTable.getClientPort((char*)targetHandle))!=-1){
