@@ -55,7 +55,8 @@ void Client::createMessage(){
 			break;
 
         case 'c':
-            compileCM(buffer+5, sendLen, buffer[3], FLAG_M);
+            compileCM(buffer+5, sendLen, buffer[3], FLAG_C);
+            break;
 
 		case 'b':
 			compileB(buffer+3, sendLen);
@@ -127,7 +128,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
         }
     }
     else{
-        printf("invalid destination client count\n");
+        printf("invalid destination client count %d\n", dstCount);
     }
 }
 
