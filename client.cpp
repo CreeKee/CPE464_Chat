@@ -141,8 +141,14 @@ void Client::compileB(uint8_t buffer[MAXBUF], int buflen){
 
 void Client::recvFromServer(int serverSock){
 	uint8_t dataBuffer[MAXBUF] = {0};
-	recvPDU(serverSock, dataBuffer, MAXBUF);
-	printf("%d->%s\n", dataBuffer[2], dataBuffer+2);
+	if(recvPDU(serverSock, dataBuffer, MAXBUF)>0){
+		printf("%d->%s\n", dataBuffer[2], dataBuffer+2);
+	}
+	else{
+		printf("connection closed\n");
+		removeFromPollSet(serverSock);
+		exit(-1);
+	}
 }
 
 void Client::sendToServer(int socketNum)

@@ -67,7 +67,6 @@ void Clientele::removeClientSocket(int target){
         if(clients[index] != NULL && clients[index]->socket == target){
             found = true;
             //TODO close socket
-            free(clients[index]->handle);
             free(clients[index]);
             clients[index] = NULL;
             clientCount--;
