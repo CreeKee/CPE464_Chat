@@ -10,7 +10,7 @@
 #define FLAGOFFSET 2
 #define HANDLELENGTH_POS 3
 #define HANDLE_POS 4
-#define CM_COUNT_POS
+#define LCOUNT_LENGTH 4
 #define FLAGACTION uint8_t PDU[MAXBUF], int messageLength, int socket
 
 
@@ -24,15 +24,15 @@ class Server{
         &Server::errorFlag, &Server::handshake, &Server::errorFlag, 
         &Server::errorFlag, &Server::cascadeB, &Server::forwardCM, 
         &Server::forwardCM, &Server::errorFlag, &Server::errorFlag, 
-        &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, 
+        &Server::errorFlag, &Server::respondL, &Server::errorFlag, 
         &Server::errorFlag};
 
     Clientele clientTable;
     int serverSocket;
 
     void cascadeB(FLAGACTION);
-    void forwardM(FLAGACTION);
     void forwardCM(FLAGACTION);
+    void respondL(FLAGACTION);
     void handshake(FLAGACTION);
     void errorFlag(FLAGACTION);
 

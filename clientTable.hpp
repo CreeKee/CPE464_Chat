@@ -13,7 +13,7 @@
 class Clientele{
 
     private:
-        client** clients;
+        subclient** clients;
         int size;
         int clientCount;
 

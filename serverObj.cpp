@@ -72,25 +72,6 @@ void Server::cascadeB(FLAGACTION){
 
 }
 
-void Server::forwardM(FLAGACTION){
-    uint8_t targetHandle[HANDLELENGTH+1] = {0};
-    int destPort;
-
-    //TODO magic nums
-    memcpy(targetHandle, PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2, PDU[HANDLELENGTH_POS+PDU[HANDLELENGTH_POS]+2]);
-
-    //TODO confirmations
-    if((destPort = clientTable.getClientPort((char*)targetHandle))!=-1){
-        forwardPDU(destPort, PDU, messageLength);
-    }
-    else{
-        
-        printf("%M to invalid client [%s]\n", targetHandle);
-    }
-
-    
-}
-
 void Server::forwardCM(FLAGACTION){
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
     int destPort;
@@ -113,6 +94,24 @@ void Server::forwardCM(FLAGACTION){
             printf("%M or %C to invalid client [%s]\n", targetHandle);
         }
     }
+
+}
+
+void Server::respondL(FLAGACTION){
+
+    uint8_t buffer[MAXBUF];
+    Crowd clients = clientTable.getClients();
+
+    ((uint32_t*) buffer)[3] = htonl(clients.count);
+    sendPDU(socket, buffer, LCOUNT_LENGTH, FLAG_LCOUNT);
+    printf("confirming count %d = %d", ((uint32_t*) buffer)[3], htonl(clients.count));
+
+    for(int clnt = 0; clnt < clients.count; clnt++){
+        insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
+        sendPDU(socket, buffer,strlen(clients.clients[clnt].handle)+4,FLAG_LRESPONSE);
+    }
+
+    sendPDU(socket, buffer, 0, FLAG_LFINISH);
 
 }
 
@@ -163,9 +162,6 @@ void Server::addNewClient(int socket, char* handle){
 	}
 
     addToPollSet(sock);
-
-
-
     
 	return;
 }

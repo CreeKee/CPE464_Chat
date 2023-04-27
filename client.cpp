@@ -62,42 +62,19 @@ void Client::createMessage(){
 			compileB(buffer+3, sendLen);
 			break;
 
+        case 'l':
+            compileL();
+            break;
+
 		default:
 			printf("unkown command %c%c\n",buffer[0], buffer[1]);
 			break;
 	}
 }
 
-void Client::insertHandle(uint8_t* PDUstart, uint8_t* handleStart, uint8_t hLen){
-	PDUstart[0] = hLen;
-	memcpy(PDUstart+1, handleStart, hLen);
-}
-
-int Client::appendHandle(uint8_t* PDU, uint8_t** buffer){
-
-	uint8_t* splitter = (uint8_t*)strchr((char*)*buffer, ' ');
-	int offset = 0;
-
-	if(splitter != NULL){
-		offset = splitter-*buffer;
-
-		if(offset < HANDLELENGTH){
-			PDU[0] = offset;
-			memcpy(PDU+1, *buffer, offset);
-			*buffer += offset+1;
-		}
-		else{
-			offset = -2;
-			printf("input handle is too long\n");
-		}
-	}
-	else{
-		offset = -1;
-		printf("invalid message formatting\n");
-	}
-
-    return offset;
-
+void Client::compileL(){
+    uint8_t buffer[MAXBUF];
+    sendPDU(serverSock, buffer, 0, FLAG_LREQUEST);
 }
 
 void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int flag){

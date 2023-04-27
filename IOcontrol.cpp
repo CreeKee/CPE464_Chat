@@ -41,13 +41,16 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
     //recieve incoming PDU length
     int retval = safeRecv(socketNumber, dataBuffer, LENGTHFIELD, MSG_WAITALL);
-
-    //convert message length from network order to host order
-    dataLength = ntohs(*(uint16_t*)dataBuffer)-LENGTHFIELD;
-    printf("recieve packet with length field: %d\n", dataLength);
+    
+    
 
     //check for disconnection
     if(retval != 0){
+
+        //convert message length from network order to host order
+        dataLength = ntohs(*(uint16_t*)dataBuffer)-LENGTHFIELD;
+        printf("recieve packet with length field: %d\n", dataLength);
+        
         if(dataLength > bufferSize){
             perror("packet too large\n");
             exit(-1);
@@ -55,13 +58,13 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
         //recieve full message
         retval = safeRecv(socketNumber, dataBuffer+LENGTHFIELD, dataLength, MSG_WAITALL);
-    }
-    else{
-        //TODO
-        return 0;
+        if(retval != 0){
+            retval += LENGTHFIELD;
+        }
     }
 
-    return retval+LENGTHFIELD;
+
+    return retval;
 }
 
 int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
@@ -80,4 +83,36 @@ int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
     printf("verifying %s\n",PDU+4);
     free(PDU);
     return fullLen;
+}
+
+void insertHandle(uint8_t* PDUstart, uint8_t* handleStart, uint8_t hLen){
+	PDUstart[0] = hLen;
+	memcpy(PDUstart+1, handleStart, hLen);
+}
+
+int appendHandle(uint8_t* PDU, uint8_t** buffer){
+
+	uint8_t* splitter = (uint8_t*)strchr((char*)*buffer, ' ');
+	int offset = 0;
+
+	if(splitter != NULL){
+		offset = splitter-*buffer;
+
+		if(offset < HANDLELENGTH){
+			PDU[0] = offset;
+			memcpy(PDU+1, *buffer, offset);
+			*buffer += offset+1;
+		}
+		else{
+			offset = -2;
+			printf("input handle is too long\n");
+		}
+	}
+	else{
+		offset = -1;
+		printf("invalid message formatting\n");
+	}
+
+    return offset;
+
 }

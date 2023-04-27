@@ -24,7 +24,6 @@ void checkArgs(int argc, char * argv[]);
 int main(int argc, char * argv[])
 {
 	int socketNum = 0;         //socket descriptor
-	int action;
 	
 	checkArgs(argc, argv);
 
@@ -32,11 +31,6 @@ int main(int argc, char * argv[])
 	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
 
 	Client cclient(socketNum, (uint8_t*)argv[3]);
-
-
-	
-
-
 
 	while(1){
 
@@ -50,8 +44,6 @@ int main(int argc, char * argv[])
 	
 	return 0;
 }
-
-
 
 void checkArgs(int argc, char * argv[])
 {

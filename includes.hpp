@@ -29,12 +29,16 @@
 #define FLAG_B 4
 #define FLAG_M 5
 #define FLAG_C 6
+#define FLAG_LREQUEST 10
+#define FLAG_LCOUNT 11
+#define FLAG_LRESPONSE 12
+#define FLAG_LFINISH 13
 
 
 #ifndef CLNT_H
 #define CLNT_H
-struct client{
-    char handle[HANDLELENGTH];
+struct subclient{
+    char handle[HANDLELENGTH+1] = {0};
     int socket;
 };
 #endif

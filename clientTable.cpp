@@ -3,7 +3,7 @@
 
 
 Clientele::Clientele(){
-    clients = new client*[DEFAULTSIZE];
+    clients = new subclient*[DEFAULTSIZE];
     size =DEFAULTSIZE;
     clientCount = 0;
     for(int init = 0; init < size; init++){
@@ -12,18 +12,23 @@ Clientele::Clientele(){
 }
 
 bool Clientele::insertClient(const char* handle, int socket){
+
     int hashVal = hash(handle);
     bool valid = true;
+
     while(clients[hashVal] != NULL && valid == true){
         valid = (strcmp(clients[hashVal]->handle,handle) != 0);
         hashVal = (hashVal+1)%size;
     }
     if(valid){
-        clients[hashVal] = new client;
-        memcpy(clients[hashVal]->handle, handle, HANDLELENGTH);
-        clients[hashVal]->socket = socket;
-        clientCount++;
-        fillCheck();
+
+        if((valid = strlen(handle)<HANDLELENGTH)){
+            clients[hashVal] = new subclient;
+            memcpy(clients[hashVal]->handle, handle, strlen(handle)+1);
+            clients[hashVal]->socket = socket;
+            clientCount++;
+            fillCheck();
+        }
     }
     return valid;
 }
@@ -106,11 +111,11 @@ uint32_t Clientele::hash(const char* handle){
 
 void Clientele::expandTable(){
 
-        client** oldTable = clients;
+        subclient** oldTable = clients;
         int oldSize = size;
 
         size = size<<1;
-        clients = new client*[size];
+        clients = new subclient*[size];
 
 
         for(int index = 0; index < size; index++){

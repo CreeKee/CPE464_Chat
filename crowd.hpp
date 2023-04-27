@@ -6,12 +6,12 @@
 class Crowd{
 
     public:
-        client* clients;
-        int count;
+        subclient* clients;
+        uint32_t count;
 
         Crowd(int clientCount){
             count = clientCount;
-            clients = new client[count];
+            clients = new subclient[count];
         };
 
         ~Crowd(){
