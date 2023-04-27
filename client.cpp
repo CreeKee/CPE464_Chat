@@ -45,12 +45,11 @@ void Client::createMessage(){
 
 	if(buffer[0] != '%'){
 		printf("all commands must start with '%'\n");
-	} else if(buffer[2] != ' '){
-		printf("invalid command format");
-	}
+	} //TODO comman format checking
 	
     else switch(tolower(buffer[1])){
 		case 'm':
+            
 			compileCM(buffer+3, sendLen, 1, FLAG_M);
 			break;
 
@@ -66,10 +65,18 @@ void Client::createMessage(){
             compileL();
             break;
 
+		case 'e':
+			compileE();
+
 		default:
 			printf("unkown command %c%c\n",buffer[0], buffer[1]);
 			break;
 	}
+}
+
+void Client::compileE(){
+	uint8_t buffer[MAXBUF] = {0};
+	sendPDU(serverSock, buffer, 0, FLAG_E);
 }
 
 void Client::compileL(){

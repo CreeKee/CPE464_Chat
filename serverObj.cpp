@@ -56,6 +56,14 @@ void Server::processPDU(int socket){
 
 }
 
+void Server::ackE(FLAGACTION){
+    uint8_t buffer[MAXBUF] = {0};
+    removeFromPollSet(socket);
+    clientTable.removeClientSocket(socket);
+    sendPDU(socket, buffer, 0, FLAG_ACKE);
+    close(socket);
+}
+
 void Server::cascadeB(FLAGACTION){
 
 	Crowd clientList = clientTable.getClients();
@@ -73,6 +81,7 @@ void Server::cascadeB(FLAGACTION){
 }
 
 void Server::forwardCM(FLAGACTION){
+    uint8_t errorbuf[MAXBUF] = {0};
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
     int destPort;
     uint8_t curLen;
@@ -90,8 +99,9 @@ void Server::forwardCM(FLAGACTION){
             forwardPDU(destPort, PDU, messageLength);
         }
         else{
-            
+            sendPDU(socket, errorbuf, 0, FLAG_ERROR);
             printf("%M or %C to invalid client [%s]\n", targetHandle);
+
         }
     }
 

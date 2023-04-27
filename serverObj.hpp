@@ -30,6 +30,7 @@ class Server{
     Clientele clientTable;
     int serverSocket;
 
+    void ackE(FLAGACTION);
     void cascadeB(FLAGACTION);
     void forwardCM(FLAGACTION);
     void respondL(FLAGACTION);

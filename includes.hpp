@@ -29,6 +29,9 @@
 #define FLAG_B 4
 #define FLAG_M 5
 #define FLAG_C 6
+#define FLAG_ERROR 7
+#define FLAG_E 8
+#define FLAG_ACKE 9
 #define FLAG_LREQUEST 10
 #define FLAG_LCOUNT 11
 #define FLAG_LRESPONSE 12

@@ -16,6 +16,7 @@ class Client{
     uint8_t myhLen;
     uint8_t handle[HANDLELENGTH];
 
+    void compileE();
     void compileL();
     void compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int flag);
     void compileB(uint8_t buffer[MAXBUF], int buflen);
