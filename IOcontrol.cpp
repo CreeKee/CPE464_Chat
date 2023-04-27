@@ -56,6 +56,9 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
         //recieve full message
         retval = safeRecv(socketNumber, dataBuffer+LENGTHFIELD, dataLength, MSG_WAITALL);
     }
+    else{
+        retval = -LENGTHFIELD;
+    }
 
     return retval+LENGTHFIELD;
 }

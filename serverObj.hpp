@@ -10,6 +10,7 @@
 #define FLAGOFFSET 2
 #define HANDLELENGTH_POS 3
 #define HANDLE_POS 4
+#define CM_COUNT_POS
 #define FLAGACTION uint8_t PDU[MAXBUF], int messageLength, int socket
 
 
@@ -21,8 +22,8 @@ class Server{
     private:
     void (Server::*flagActions[FLAGCOUNT])(FLAGACTION) = {
         &Server::errorFlag, &Server::handshake, &Server::errorFlag, 
-        &Server::errorFlag, &Server::cascadeB, &Server::forwardM, 
-        &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, 
+        &Server::errorFlag, &Server::cascadeB, &Server::forwardCM, 
+        &Server::forwardCM, &Server::errorFlag, &Server::errorFlag, 
         &Server::errorFlag, &Server::errorFlag, &Server::errorFlag, 
         &Server::errorFlag};
 
@@ -31,6 +32,7 @@ class Server{
 
     void cascadeB(FLAGACTION);
     void forwardM(FLAGACTION);
+    void forwardCM(FLAGACTION);
     void handshake(FLAGACTION);
     void errorFlag(FLAGACTION);
 

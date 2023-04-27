@@ -54,6 +54,9 @@ void Client::createMessage(){
 			compileCM(buffer+3, sendLen, 1, FLAG_M);
 			break;
 
+        case 'c':
+            compileCM(buffer+5, sendLen, buffer[3], FLAG_M);
+
 		case 'b':
 			compileB(buffer+3, sendLen);
 			break;
@@ -103,25 +106,29 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 	int currlen;
 	int dataStart = 0;
     int check = 0;
-    //TODO verify sender count
 
-    PDU[0] = myhLen;
-    memcpy(PDU+1, handle, myhLen);
-    PDU[myhLen+1] = dstCount;
+    if((dstCount == 1 && flag == FLAG_M) || (dstCount>=2 && dstCount<=9 && flag == FLAG_C)){
 
-    dataStart += myhLen+2;
+        PDU[0] = myhLen;
+        memcpy(PDU+1, handle, myhLen);
+        PDU[myhLen+1] = dstCount;
 
-    for(int dest = 0; dest < dstCount && check >=0; dest++){
-        dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
-        buflen -= check;
+        dataStart += myhLen+2;
+
+        for(int dest = 0; dest < dstCount && check >=0; dest++){
+            dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
+            buflen -= check;
+        }
+
+        if(check>=0){
+            
+            fragment(PDU, buf, buflen, dataStart, flag);
+
+        }
     }
-
-    if(check>=0){
-        
-        fragment(PDU, buf, buflen, dataStart, flag);
-
+    else{
+        printf("invalid destination client count\n");
     }
-	
 }
 
 void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int dataStart, int flag){
@@ -137,9 +144,6 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
     }
 }
 
-
-
-
 void Client::compileB(uint8_t buffer[MAXBUF], int buflen){
 	
     uint8_t PDU[MAXBUF] = {0};
@@ -147,7 +151,7 @@ void Client::compileB(uint8_t buffer[MAXBUF], int buflen){
     PDU[0] = myhLen;
     memcpy(PDU+1, handle, myhLen);
 
-    fragment(PDU, buffer, buflen, 0, FLAG_B);
+    fragment(PDU, buffer, buflen, myhLen+1, FLAG_B);
 }
 
 void Client::recvFromServer(int serverSock){

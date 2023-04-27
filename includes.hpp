@@ -28,6 +28,7 @@
 #define FLAG_REJECTCLIENT 3
 #define FLAG_B 4
 #define FLAG_M 5
+#define FLAG_C 6
 
 
 #ifndef CLNT_H

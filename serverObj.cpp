@@ -75,7 +75,7 @@ void Server::cascadeB(FLAGACTION){
 void Server::forwardM(FLAGACTION){
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
     int destPort;
-    
+
     //TODO magic nums
     memcpy(targetHandle, PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2, PDU[HANDLELENGTH_POS+PDU[HANDLELENGTH_POS]+2]);
 
@@ -89,6 +89,31 @@ void Server::forwardM(FLAGACTION){
     }
 
     
+}
+
+void Server::forwardCM(FLAGACTION){
+    uint8_t targetHandle[HANDLELENGTH+1] = {0};
+    int destPort;
+    uint8_t curLen;
+    uint8_t* curDst = PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2;
+
+    //TODO magic nums
+
+    for(int cnt = 0; cnt<HANDLE_POS+PDU[HANDLELENGTH_POS]; cnt++){
+        curLen = curDst[-1];
+        memcpy(targetHandle, curDst, curLen);
+        curDst+=curLen+1;
+
+        //TODO confirmations
+        if((destPort = clientTable.getClientPort((char*)targetHandle))!=-1){
+            forwardPDU(destPort, PDU, messageLength);
+        }
+        else{
+            
+            printf("%M or %C to invalid client [%s]\n", targetHandle);
+        }
+    }
+
 }
 
 void Server::handshake(FLAGACTION){
@@ -109,10 +134,13 @@ void Server::handshake(FLAGACTION){
 }
 
 void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket){
-    printf("FLAG parsing\n");
-    fflush(stdout);
-    //TODO extract flag
-    (this->*flagActions[readFlag(PDU)])(PDU, messageLength, socket);
+    int flag = readFlag(PDU);
+    if( flag<= FLAGCOUNT && flag >=0){
+        (this->*flagActions[flag])(PDU, messageLength, socket);
+    }
+    else{
+        printf("bad flag read\n");
+    }
 }
 
 void Server::errorFlag(FLAGACTION){
