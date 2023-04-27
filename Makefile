@@ -5,7 +5,7 @@ CC= g++
 CFLAGS= -g -Wall
 LIBS = 
 
-OBJS = networks.o gethostbyname.o pollLib.o safeUtil.o IOcontrol.o serverObj.o clientTable.o
+OBJS = networks.o gethostbyname.o pollLib.o safeUtil.o IOcontrol.o serverObj.o clientTable.o client.o
 
 .PHONY: $(OBJS)
 
@@ -34,6 +34,9 @@ IOcontrol.o:
 
 serverObj.o:
 	$(CC) $(CFLAGS) -c serverObj.cpp
+
+client.o:
+	$(CC) $(CFLAGS) -c client.cpp
 
 clientTable.o:
 	$(CC) $(CFLAGS) -c clientTable.cpp
