@@ -55,7 +55,7 @@ void Client::createMessage(){
 			break;
 
         case 'c':
-            compileCM(buffer+5, sendLen, buffer[3], FLAG_C);
+            compileCM(buffer+5, sendLen, buffer[2], FLAG_C);
             break;
 
 		case 'b':
