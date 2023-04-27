@@ -108,7 +108,7 @@ void Server::respondL(FLAGACTION){
 
     for(int clnt = 0; clnt < clients.count; clnt++){
         insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
-        sendPDU(socket, buffer,strlen(clients.clients[clnt].handle)+4,FLAG_LRESPONSE);
+        sendPDU(socket, buffer,strlen(clients.clients[clnt].handle)+1,FLAG_LRESPONSE);
     }
 
     sendPDU(socket, buffer, 0, FLAG_LFINISH);
