@@ -12,6 +12,7 @@ Client::Client(int socket, uint8_t myhandle[HANDLELENGTH]){
 	addToPollSet(STDIN_FILENO);
 
     sendHandshake();
+    printf("[%s]\n", handle);
 
 }
 
@@ -74,12 +75,12 @@ int Client::appendHandle(uint8_t* PDU, uint8_t* buffer){
 	int offset = 0;
 
 	if(splitter != NULL){
-		offset = splitter-buffer;
+		offset = splitter-buffer+1;
 
 		if(offset < HANDLELENGTH){
-			insertHandle(PDU, buffer, offset);
-			PDU[0] = offset;
-			memcpy(PDU+1, buffer, offset);
+			insertHandle(PDU, buffer, offset-1);
+			PDU[0] = offset-1;
+			memcpy(PDU+1, buffer, offset-1);
 			buffer+=offset;
 		}
 		else{
@@ -108,7 +109,9 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     memcpy(PDU+1, handle, myhLen);
     PDU[myhLen+1] = dstCount;
 
-    for(int dest = 0; dest<dstCount && check >=0; dest++){
+    dataStart += myhLen+2;
+
+    for(int dest = 0; dest < dstCount && check >=0; dest++){
         dataStart += (check = appendHandle((PDU+dataStart),buffer));
         buflen -= check;
     }
