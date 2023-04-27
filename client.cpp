@@ -74,12 +74,12 @@ int Client::appendHandle(uint8_t* PDU, uint8_t* buffer){
 	int offset = 0;
 
 	if(splitter != NULL){
-		offset = splitter-buffer+1;
+		offset = splitter-buffer;
 
 		if(offset < HANDLELENGTH){
-			insertHandle(PDU, buffer, offset-1);
-			PDU[0] = offset-1;
-			memcpy(PDU+1, buffer, offset-1);
+			insertHandle(PDU, buffer, offset);
+			PDU[0] = offset;
+			memcpy(PDU+1, buffer, offset);
 			buffer+=offset;
 		}
 		else{
