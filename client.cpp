@@ -133,7 +133,7 @@ void Client::compileB(uint8_t buffer[MAXBUF], int buflen){
 }
 
 void Client::recvFromServer(int serverSock){
-	uint8_t dataBuffer[MAXBUF];
+	uint8_t dataBuffer[MAXBUF] = {0};
 	recvPDU(serverSock, dataBuffer, MAXBUF);
 	printf("%d->%s\n", dataBuffer[2], dataBuffer+2);
 }
