@@ -102,9 +102,9 @@ void Server::respondL(FLAGACTION){
     uint8_t buffer[MAXBUF];
     Crowd clients = clientTable.getClients();
 
-    ((uint32_t*) buffer)[3] = htonl(clients.count);
+    ((uint32_t*) buffer)[0] = htonl(clients.count);
     sendPDU(socket, buffer, LCOUNT_LENGTH, FLAG_LCOUNT);
-    printf("confirming count %d = %d", ((uint32_t*) buffer)[3], htonl(clients.count));
+    printf("confirming count %d = %d", ((uint32_t*) buffer)[0], htonl(clients.count));
 
     for(int clnt = 0; clnt < clients.count; clnt++){
         insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
