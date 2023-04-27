@@ -99,6 +99,7 @@ int Client::appendHandle(uint8_t* PDU, uint8_t* buffer){
 void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int flag){
 
 	uint8_t PDU[MAXBUF] = {0};
+    uint8_t* buf = buffer;
 	int currlen;
 	int dataStart = 0;
     int check = 0;
@@ -111,19 +112,19 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     dataStart += myhLen+2;
 
     for(int dest = 0; dest < dstCount && check >=0; dest++){
-        dataStart += (check = appendHandle((PDU+dataStart),buffer));
+        dataStart += (check = appendHandle((PDU+dataStart), buf))+1;
         buflen -= check;
     }
 
     if(check>=0){
         
-        fragment(PDU, buffer, buflen, dataStart, flag);
+        fragment(PDU, buf, buflen, dataStart, flag);
 
     }
 	
 }
 
-void Client::fragment(uint8_t PDU[MAXBUF], uint8_t buffer[MAXBUF], int buflen, int dataStart, int flag){
+void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int dataStart, int flag){
     
     //TODO broken
     int currlen;
