@@ -69,18 +69,18 @@ void Client::insertHandle(uint8_t* PDUstart, uint8_t* handleStart, uint8_t hLen)
 	memcpy(PDUstart+1, handleStart, hLen);
 }
 
-int Client::appendHandle(uint8_t* PDU, uint8_t* buffer){
+int Client::appendHandle(uint8_t* PDU, uint8_t** buffer){
 
-	uint8_t* splitter = (uint8_t*)strchr((char*)buffer, ' ');
+	uint8_t* splitter = (uint8_t*)strchr((char*)*buffer, ' ');
 	int offset = 0;
 
 	if(splitter != NULL){
-		offset = splitter-buffer;
+		offset = splitter-*buffer;
 
 		if(offset < HANDLELENGTH){
 			PDU[0] = offset;
-			memcpy(PDU+1, buffer, offset);
-			buffer+=offset+1;
+			memcpy(PDU+1, *buffer, offset);
+			*buffer += offset+1;
 		}
 		else{
 			offset = -2;
@@ -112,7 +112,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     dataStart += myhLen+2;
 
     for(int dest = 0; dest < dstCount && check >=0; dest++){
-        dataStart += (check = appendHandle((PDU+dataStart), buf))+1;
+        dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
         buflen -= check;
     }
 

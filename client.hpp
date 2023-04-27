@@ -22,7 +22,7 @@ class Client{
     void sendToServer(int socketNum);
     int readFromStdin(uint8_t * buffer);
     void recvFromServer(int serverSock);
-    int appendHandle(uint8_t* PDU, uint8_t* buffer);
+    int appendHandle(uint8_t* PDU, uint8_t** buffer);
     void insertHandle(uint8_t* PDUstart, uint8_t* handleStart, uint8_t hLen);
     void compileB(uint8_t buffer[MAXBUF], int buflen);
     
