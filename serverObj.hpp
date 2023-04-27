@@ -23,7 +23,7 @@ class Server{
     void (Server::*flagActions[FLAGCOUNT])(FLAGACTION) = {
         &Server::errorFlag, &Server::handshake, &Server::errorFlag, 
         &Server::errorFlag, &Server::cascadeB, &Server::forwardCM, 
-        &Server::forwardCM, &Server::errorFlag, &Server::errorFlag, 
+        &Server::forwardCM, &Server::errorFlag, &Server::ackE, 
         &Server::errorFlag, &Server::respondL, &Server::errorFlag, 
         &Server::errorFlag};
 
