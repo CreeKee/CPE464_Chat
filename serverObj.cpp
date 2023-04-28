@@ -111,7 +111,7 @@ void Server::respondL(FLAGACTION){
     sendPDU(socket, buffer, LCOUNT_LENGTH, FLAG_LCOUNT);
     printf("confirming count %d = %d", ((uint32_t*) buffer)[0], htonl(clients.count));
 
-    for(int clnt = 0; clnt < clients.count; clnt++){
+    for(uint32_t clnt = 0; clnt < clients.count; clnt++){
         insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
         sendPDU(socket, buffer,strlen(clients.clients[clnt].handle)+1,FLAG_LRESPONSE);
     }

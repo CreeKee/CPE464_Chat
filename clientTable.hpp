@@ -29,8 +29,6 @@ class Clientele{
         void removeClientSocket(int target);
         Crowd getClients();
 
-        uint32_t getCount(){return clientCount;}
-
 
 };
 
