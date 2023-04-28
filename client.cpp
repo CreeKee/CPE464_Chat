@@ -117,7 +117,7 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
     
     //TODO broken
     int currlen;
-	printf("->%s\n",PDU);
+	printf("->%s %d %d\n",PDU, buflen, dataStart);
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
         currlen = std::min(MAXMSG-1, buflen-shatter);
