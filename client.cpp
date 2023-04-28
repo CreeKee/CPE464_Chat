@@ -99,6 +99,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
         for(int dest = 0; dest < dstCount && check >=0; dest++){
             dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
+			printf("offset: %d\n", check);
             buflen -= check;
         }
 
