@@ -103,6 +103,7 @@ void Client::createMessage(){
 
 				case 'l':
 					//does not matter if any additional message is added on, just as long as the %L exists
+					printf("made it this far");
 					compileL();
 					break;
 
