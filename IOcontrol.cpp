@@ -76,6 +76,13 @@ uint32_t addChatHeader(uint8_t* dataBuffer, uint32_t lengthOfData, uint8_t flag)
         exit(-1);
     }
 
+    uint8_t* s;
+    printf("readback: ");
+    while(*s)
+        printf("%02x", (unsigned int) *s++);
+    printf("\n");
+    fflush(stdout);
+
     return fullLen;
 }
 
