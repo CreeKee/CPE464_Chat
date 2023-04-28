@@ -134,8 +134,7 @@ void Server::forwardCM(FLAGACTION){
 respondL responds to a %L message by sending appropriate flag 11, 12, and 13 messages
 */
 void Server::respondL(FLAGACTION){
-    printf("hello!\n");
-    fflush(stdout);
+
     uint8_t buffer[MAXBUF];
 
     //get list of all clients
@@ -143,8 +142,11 @@ void Server::respondL(FLAGACTION){
 
     //convert client count to network order and send flag 11 message
     ((uint32_t*) buffer)[0] = htonl(clients.count);
+        printf("hi!\n");
+    fflush(stdout);
     sendPDU(socket, buffer, LCOUNT_LENGTH, FLAG_LCOUNT);
-
+    printf("by!\n");
+    fflush(stdout);
     //send flag 12 message for each client
     for(uint32_t clnt = 0; clnt < clients.count; clnt++){
         insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
