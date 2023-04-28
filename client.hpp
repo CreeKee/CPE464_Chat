@@ -43,7 +43,7 @@ class Client{
     void badConnect(RECVACTION){printf("Handle already in use %s\n",handle); close(serverSock); exit(0);}
     void displayB(RECVACTION){printf("%s\n", PDU+displayHandle(PDU)+1);}
     void displayCM(RECVACTION);
-    void badHandle(RECVACTION){printf("\nClient with handle %.*s does not exist", PDU[0], PDU+1);}
+    void badHandle(RECVACTION){printf("\nClient with handle %.*s does not exist\n", PDU[0], PDU+1);}
     void consign(RECVACTION){close(serverSock); exit(0);}
     void prepL(RECVACTION){printf("\nNumber of clients: %d\n", ntohl(*(uint32_t*)PDU)); print$ = false;}
     void displayL(RECVACTION){printf("\t%.*s\n",PDU[0], PDU+1);}

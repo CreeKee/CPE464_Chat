@@ -219,10 +219,11 @@ void Client::sendHandshake(){
 }
 
 void Client::displayCM(RECVACTION){
+
 	int offset = displayHandle(PDU)+1;
 
 	for(int dsts = 0; dsts < PDU[offset]; dsts++){
-		offset+=(PDU+(offset++))[0];
+		offset+=(PDU+(++offset))[0] + 1;
 	}
 	printf("%s\n",PDU+offset);
 }
