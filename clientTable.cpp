@@ -17,6 +17,8 @@ bool Clientele::insertClient(const char* handle, uint32_t socket){
     uint32_t hashVal = hash(handle);
     bool valid = true;
     
+    printf("inserting [%s] with length %d", handle, strlen(handle);)
+
     //scan to next available bucket and check for duplicates
     while(clients[hashVal] != NULL && valid == true){
         valid = (strcmp(clients[hashVal]->handle,handle) != 0);
