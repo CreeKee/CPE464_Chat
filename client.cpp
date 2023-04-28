@@ -225,16 +225,14 @@ void Client::displayCM(RECVACTION){
 
 	uint8_t* s = PDU;
 	uint8_t offset = displayHandle(PDU)+1;
+	uint8_t clnts = PDU[offset];
 
-	while(*s) printf("%02x-", (unsigned int) *s++);
-	printf("\n");
 	
-	for(int dsts = 0; dsts < PDU[offset]; dsts++){
-		printf("num peers = %d, %d\n",PDU[offset], PDU[offset+1]);
+	
+	for(int dsts = 0; dsts < clnts; dsts++){
 		offset += PDU[++offset] + 1;
-		printf("double check = %d, %d\n",PDU[offset], PDU[offset+1]);
 	}
-	printf("%s | %s | %d | %d | %s\n",PDU, PDU+offset, PDU[offset], offset, PDU+7+7+3);
+	printf("%s\n",PDU+offset);
 }
 
 
