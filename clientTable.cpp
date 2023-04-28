@@ -86,6 +86,7 @@ and remove their entry
 */
 void Clientele::removeClientSocket(uint32_t target){
     printf("---->%d\n",clientCount);
+    fflush(stdout);
     bool found = false;
 
     //locate target
