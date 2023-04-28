@@ -34,7 +34,6 @@ void Client::createMessage(){
 
 	uint8_t buffer[MAXBUF] = {0};   //data buffer
 	int sendLen = 0;        //amount of data to send
-	int sent = 0; 
 
 	sendLen = readFromStdin(buffer);
 
@@ -90,7 +89,6 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
 	uint8_t PDU[MAXBUF] = {0};
     uint8_t* buf = buffer;
-	int currlen;
 	int dataStart = 0;
     int check = 0;
 	int bufRemaining = buflen;
@@ -123,20 +121,29 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     }
 }
 
+/*
+fragment will take a buffer and send it to the server for processing.
+if the data in the buffer exceeds the 199 byte limit, it is broken up
+and sent in multiple fragments as seperate packets.
+*/
 void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int dataStart, int flag){
     
-    //TODO broken
-
+	//new buffer is used to avoid adding multiple chat headers due to mutability
 	uint8_t newBuf[MAXBUF];
-
     int currlen;
+
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
-		//memset(newBuf, 0,MAXBUF);
-
+		//copy current header
 		memcpy(newBuf,PDU,dataStart);
+
+		//get current data segment
         currlen = std::min(MAXMSG-1, buflen-shatter);
+
+		//add data segment to buffer
         memcpy(newBuf+(dataStart), buffer+shatter, currlen);
+
+		//send fragmented data
         sendPDU(serverSock, newBuf, currlen+dataStart, flag);
 
     }

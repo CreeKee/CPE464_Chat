@@ -154,8 +154,6 @@ void Server::errorFlag(FLAGACTION){
 void Server::addNewClient(int socket){
 	
 	int sock;
-    int len;
-    uint8_t PDU[MAXBUF];
 
 	//add new socket to the poll
 	if((sock = tcpAccept(serverSocket, DEBUG_FLAG)) == -1){

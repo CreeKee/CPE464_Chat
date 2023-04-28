@@ -14,8 +14,8 @@ class Clientele{
 
     private:
         subclient** clients;
-        int size;
-        int clientCount;
+        uint32_t size;
+        uint32_t clientCount;
 
         uint32_t hash(const char* handle);
         void expandTable();
@@ -28,6 +28,8 @@ class Clientele{
         void removeClientHandle(char* handle);
         void removeClientSocket(int target);
         Crowd getClients();
+
+        uint32_t getCount(){return clientCount;}
 
 
 };
