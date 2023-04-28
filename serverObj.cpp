@@ -98,8 +98,9 @@ void Server::forwardCM(FLAGACTION){
             forwardPDU(destPort, PDU, messageLength);
         }
         else{
-            sendPDU(socket, errorbuf, 0, FLAG_ERROR);
-            printf("%M or %C to invalid client [%s]\n", targetHandle);
+            insertHandle(errorbuf, targetHandle, curLen);
+            sendPDU(socket, errorbuf, curLen+1, FLAG_ERROR);
+            printf("M or C to invalid client [%s]\n", targetHandle);
         }
     }
 

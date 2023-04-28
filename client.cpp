@@ -73,6 +73,7 @@ void Client::createMessage(){
 void Client::compileE(){
 	uint8_t buffer[MAXBUF] = {0};
 	sendPDU(serverSock, buffer, 0, FLAG_E);
+	print$ = false;
 }
 
 void Client::compileL(){
