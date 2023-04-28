@@ -126,12 +126,18 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int dataStart, int flag){
     
     //TODO broken
+
+	uint8_t newBuf[MAXBUF];
+
     int currlen;
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
+		//memset(newBuf, 0,MAXBUF);
+
+		memcpy(newBuf,PDU,dataStart);
         currlen = std::min(MAXMSG-1, buflen-shatter);
-        memcpy(PDU+(dataStart), buffer+shatter, currlen);
-        sendPDU(serverSock, PDU, currlen+dataStart, flag);
+        memcpy(newBuf+(dataStart), buffer+shatter, currlen);
+        sendPDU(serverSock, newBuf, currlen+dataStart, flag);
 
     }
 }
