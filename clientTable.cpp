@@ -112,13 +112,14 @@ getClients coalates and returns a crowd containing all of the current clients
 Crowd Clientele::getClients(){
 
     Crowd retval(clientCount);
-    printf("<>%d\n",retval.count);
-    fflush(stdout);
+
     //collect all clients
     for(uint32_t index = 0, found = 0; index < size && found < clientCount; index++){
-        
+        printf("<>%d\n", index);
+        fflush(stdout);
         if(clients[index] != NULL){
-
+            printf("found client %s at %d\n",clients[index]->handle, index);
+            fflush(stdout);
             //add client to crowd
             retval.clients[found].socket = clients[index]->socket;
             memcpy(retval.clients[found].handle, clients[index]->handle, HANDLELENGTH);
