@@ -84,7 +84,7 @@ void Client::createMessage(){
 		s++;
 		if((comp = getcomp(&s))!= -1){
 			s++;
-			switch(tolower(buffer[1])){
+			switch(tolower(comp)){
 				case 'm':
 					if(getcomp(&s)!= -1) compileCM(s, sendLen, 1, FLAG_M);
 					else printf("Invalid command format\n");
