@@ -125,6 +125,9 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
         currlen = std::min(MAXMSG-1, buflen-shatter);
         memcpy(PDU+(dataStart), buffer+shatter, currlen);
 		printf("readback: %s\n",PDU);
+		uint8_t* s = PDU;
+		while(*s) printf("%02x-", (unsigned int) *s++);
+		printf("\n");
         sendPDU(serverSock, PDU, currlen+dataStart, flag);
 
     }
@@ -223,7 +226,7 @@ void Client::displayCM(RECVACTION){
 	uint8_t* s = PDU;
 	uint8_t offset = displayHandle(PDU)+1;
 
-	while(*s) printf("%02x - ", (unsigned int) *s++);
+	while(*s) printf("%02x-", (unsigned int) *s++);
 	printf("\n");
 	
 	for(int dsts = 0; dsts < PDU[offset]; dsts++){
