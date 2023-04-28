@@ -95,7 +95,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
         memcpy(PDU+1, handle, myhLen);
         PDU[myhLen+1] = dstCount;
 
-        dataStart += myhLen+2;
+        dataStart = myhLen+2;
 
         for(int dest = 0; dest < dstCount && check >=0; dest++){
             dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
@@ -117,6 +117,7 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
     
     //TODO broken
     int currlen;
+	printf("->%s\n",PDU);
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
         currlen = std::min(MAXMSG-1, buflen-shatter);
