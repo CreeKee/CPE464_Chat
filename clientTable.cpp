@@ -110,10 +110,10 @@ void Clientele::removeClientSocket(uint32_t target){
 getClients coalates and returns a crowd containing all of the current clients
 */
 Crowd Clientele::getClients(){
-    printf("---->%d\n",clientCount);
-    fflush(stdout);
-    Crowd retval(clientCount);
 
+    Crowd retval(clientCount);
+    printf("<>%d\n",retval.count);
+    fflush(stdout);
     //collect all clients
     for(uint32_t index = 0, found = 0; index < size && found < clientCount; index++){
         

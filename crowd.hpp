@@ -9,7 +9,7 @@ class Crowd{
         subclient* clients;
         uint32_t count;
 
-        Crowd(int clientCount){
+        Crowd(uint32_t clientCount){
             count = clientCount;
             clients = new subclient[count];
         };
