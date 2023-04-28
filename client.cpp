@@ -119,15 +119,10 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
     
     //TODO broken
     int currlen;
-	printf("->%s %d %d\n",PDU, buflen, dataStart);
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
         currlen = std::min(MAXMSG-1, buflen-shatter);
         memcpy(PDU+(dataStart), buffer+shatter, currlen);
-		printf("readback: %s\n",PDU);
-		uint8_t* s = PDU;
-		while(*s) printf("%02x-", (unsigned int) *s++);
-		printf("\n");
         sendPDU(serverSock, PDU, currlen+dataStart, flag);
 
     }
@@ -225,12 +220,10 @@ void Client::displayCM(RECVACTION){
 
 	uint8_t* s = PDU;
 	uint8_t offset = displayHandle(PDU)+1;
-	uint8_t clnts = PDU[offset];
+	uint8_t clnts = PDU[offset++];
 
-	
-	
 	for(int dsts = 0; dsts < clnts; dsts++){
-		offset += PDU[++offset] + 1;
+		offset += PDU[offset] + 1;
 	}
 	printf("%s\n",PDU+offset);
 }
@@ -239,6 +232,6 @@ void Client::displayCM(RECVACTION){
 uint8_t Client::displayHandle(uint8_t PDU[MAXBUF]){
 	uint8_t length = PDU[0];
 	
-	printf("\n%d::%.*s: ",length, length, PDU+1);
+	printf("%.*s: ",length, length, PDU+1);
 	return length;
 }
