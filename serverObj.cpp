@@ -134,7 +134,8 @@ void Server::forwardCM(FLAGACTION){
 respondL responds to a %L message by sending appropriate flag 11, 12, and 13 messages
 */
 void Server::respondL(FLAGACTION){
-
+    printf("hello!\n");
+    fflush(stdout);
     uint8_t buffer[MAXBUF];
 
     //get list of all clients
