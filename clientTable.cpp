@@ -122,7 +122,7 @@ Crowd Clientele::getClients(){
         printf("<>%d\n", index);
         fflush(stdout);
         if(clients[index] != NULL){
-            printf("found client at %d\n", index);
+            printf("found client at %d with socket\n", index, clients[index]->socket);
             fflush(stdout);
             //add client to crowd
             retval.clients[found].socket = clients[index]->socket;
