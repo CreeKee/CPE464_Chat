@@ -61,7 +61,7 @@ void Server::ackE(FLAGACTION){
     removeFromPollSet(socket);
     clientTable.removeClientSocket(socket);
     sendPDU(socket, buffer, 0, FLAG_ACKE);
-    close(socket);
+    //TODO close on client side
 }
 
 void Server::cascadeB(FLAGACTION){
@@ -75,12 +75,11 @@ void Server::cascadeB(FLAGACTION){
 
             forwardPDU(clientList.clients[client].socket, PDU, messageLength);
         }
-
     }
-
 }
 
 void Server::forwardCM(FLAGACTION){
+    
     uint8_t errorbuf[MAXBUF] = {0};
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
     int destPort;
@@ -101,7 +100,6 @@ void Server::forwardCM(FLAGACTION){
         else{
             sendPDU(socket, errorbuf, 0, FLAG_ERROR);
             printf("%M or %C to invalid client [%s]\n", targetHandle);
-
         }
     }
 
@@ -154,7 +152,6 @@ void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket){
 
 void Server::errorFlag(FLAGACTION){
     perror("server recieved PDU with an invalid flag\n");
-    exit(-1);
 }
 
 void Server::addNewClient(int socket, char* handle){

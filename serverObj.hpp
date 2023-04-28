@@ -6,8 +6,7 @@
 #include "IOcontrol.hpp"
 #include "pollLib.h"
 
-#define FLAGCOUNT 13
-#define FLAGOFFSET 2
+#define FLAGCOUNT 11
 #define HANDLELENGTH_POS 3
 #define HANDLE_POS 4
 #define LCOUNT_LENGTH 4
@@ -24,8 +23,7 @@ class Server{
         &Server::errorFlag, &Server::handshake, &Server::errorFlag, 
         &Server::errorFlag, &Server::cascadeB, &Server::forwardCM, 
         &Server::forwardCM, &Server::errorFlag, &Server::ackE, 
-        &Server::errorFlag, &Server::respondL, &Server::errorFlag, 
-        &Server::errorFlag};
+        &Server::errorFlag, &Server::respondL};
 
     Clientele clientTable;
     int serverSocket;

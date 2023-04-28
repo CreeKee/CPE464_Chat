@@ -67,7 +67,7 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
 
 int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
     int fullLen = lengthOfData+CHATLENGTH;
-    uint8_t* PDU = (uint8_t*)sCalloc(fullLen,sizeof(uint8_t));
+    uint8_t PDU[MAXBUF] = {0};
 
     if(fullLen > MAXBUF){
         perror("PDU too long after length appended\n");
@@ -78,8 +78,6 @@ int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
 
     memcpy(PDU+CHATLENGTH, dataBuffer, lengthOfData);
     memcpy(dataBuffer, PDU, fullLen);
-    printf("verifying %s\n",PDU+4);
-    free(PDU);
     return fullLen;
 }
 

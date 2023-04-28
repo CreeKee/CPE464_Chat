@@ -12,36 +12,31 @@ Client::Client(int socket, uint8_t myhandle[HANDLELENGTH]){
 	addToPollSet(STDIN_FILENO);
 
     sendHandshake();
-    printf("[%s]\n", handle);
-
 }
 
 void Client::clientAction(){
     int action;
     if((action = pollCall(-1)) != -1){
-
-            switch(action){
-                case STDIN_FILENO:
-                    createMessage();
-                    break;
-                default:
-                    recvFromServer(action);
-                    
-                    
-                    break;
-            }
-        }
+		switch(action){
+			case STDIN_FILENO:
+				createMessage();
+				break;
+			default:
+				recvFromServer(action); 
+				break;
+		}
+    }
+	if(print$) printf("$: ");
 }
 
 void Client::createMessage(){
 
-	uint8_t buffer[MAXBUF];   //data buffer
+	uint8_t buffer[MAXBUF] = {0};   //data buffer
 	int sendLen = 0;        //amount of data to send
 	int sent = 0; 
 
 	sendLen = readFromStdin(buffer);
 
-	printf("readback: %s <->%s\n",buffer, buffer+3);
 
 	if(buffer[0] != '%'){
 		printf("all commands must start with '%'\n");
@@ -67,7 +62,7 @@ void Client::createMessage(){
 
 		case 'e':
 			compileE();
-
+			break;
 		default:
 			printf("unkown command %c%c\n",buffer[0], buffer[1]);
 			break;
@@ -80,7 +75,7 @@ void Client::compileE(){
 }
 
 void Client::compileL(){
-    uint8_t buffer[MAXBUF];
+    uint8_t buffer[MAXBUF] = {0};
     sendPDU(serverSock, buffer, 0, FLAG_LREQUEST);
 }
 
@@ -112,7 +107,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
         }
     }
     else{
-        printf("invalid destination client count %d\n", dstCount);
+        printf("Invalid destination client count: %d\n", dstCount);
     }
 }
 
@@ -140,25 +135,38 @@ void Client::compileB(uint8_t buffer[MAXBUF], int buflen){
 }
 
 void Client::recvFromServer(int serverSock){
-	uint8_t dataBuffer[MAXBUF] = {0};
-	if(recvPDU(serverSock, dataBuffer, MAXBUF)>0){
-		printf("%d->%s\n", dataBuffer[2], dataBuffer+2);
+
+	uint8_t PDU[MAXBUF] = {0};
+	int flag;
+	int messageLength;
+
+	if((messageLength = recvPDU(serverSock, PDU, MAXBUF))>0){
+
+		flag = PDU[FLAGOFFSET];
+
+		if( flag<= PRINTACTIONS && flag >=0){
+			(this->*flagActions[flag])(PDU+3);
+		}
+		else{
+			printf("bad flag read\n");
+		}
+
 	}
 	else{
-		printf("connection closed\n");
+		printf("Server Terminated\n");
 		removeFromPollSet(serverSock);
-		exit(-1);
+		exit(0);
 	}
+
 }
 
 void Client::sendToServer(int socketNum)
 {
-	uint8_t sendBuf[MAXBUF];   //data buffer
+	uint8_t sendBuf[MAXBUF] = {0};   //data buffer
 	int sendLen = 0;        //amount of data to send
 	int sent = 0;            //actual amount of data sent/* get the data and send it   */
 	
 	sendLen = readFromStdin(sendBuf);
-	printf("read: %s string len: %d (including null)\n", sendBuf, sendLen);
 	
 	prependLength(sendBuf,sendLen);
 	sent = safeSend(socketNum, sendBuf, sendLen+LENGTHFIELD, 0) - LENGTHFIELD;
@@ -168,7 +176,6 @@ void Client::sendToServer(int socketNum)
 		exit(-1);
 	}
 
-	printf("Amount of data sent is: %d\n", sent);
 }
 
 int Client::readFromStdin(uint8_t * buffer)
@@ -197,11 +204,26 @@ int Client::readFromStdin(uint8_t * buffer)
 
 void Client::sendHandshake(){
 
-	uint8_t buffer[MAXBUF];
-	printf("prepping %s with length %d\n", handle, myhLen);
+	uint8_t buffer[MAXBUF] = {0};
 	
 	buffer[0] = myhLen;
 	memcpy(buffer+1, handle, myhLen+1);
 	sendPDU(serverSock, buffer, myhLen+1, FLAG_NEWCLIENT);
 
+}
+
+void Client::displayCM(RECVACTION){
+	int offset = displayHandle(PDU)+1;
+
+	for(int dsts = 0; dsts < PDU[offset]; dsts++){
+		offset+=(PDU+(offset++))[0];
+	}
+	printf("%s\n",PDU+offset);
+}
+
+
+uint8_t Client::displayHandle(uint8_t PDU[MAXBUF]){
+	uint8_t length = PDU[0];
+	printf("\n%.*s: ", length, PDU+1);
+	return length;
 }

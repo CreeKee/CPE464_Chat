@@ -16,7 +16,7 @@
 
 #define MAXMSG 200
 
-#define MAXBUF 1024
+#define MAXBUF 1400
 #define DEBUG_FLAG 1
 
 #define HANDLELENGTH 100
@@ -36,6 +36,8 @@
 #define FLAG_LCOUNT 11
 #define FLAG_LRESPONSE 12
 #define FLAG_LFINISH 13
+
+#define FLAGOFFSET 2
 
 
 #ifndef CLNT_H
