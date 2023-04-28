@@ -38,7 +38,7 @@ class Server{
     void parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket);
     
     void processPDU(int socket);
-    void addNewClient(int socket, char* handle);
+    void addNewClient(int socket);
     uint8_t readFlag(const uint8_t PDU[MAXBUF]);
 
     public:

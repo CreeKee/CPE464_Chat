@@ -1,6 +1,5 @@
 #include "serverObj.hpp"
 
-
 Server::Server(int portnum){
 
     clientTable = Clientele();
@@ -20,7 +19,7 @@ void Server::serverAction(){
     if((action = pollCall(-1)) != -1){
 
         if(action == serverSocket){
-            addNewClient(serverSocket, "test handle");
+            addNewClient(serverSocket);
         }
         else{
             processPDU(action);
@@ -61,7 +60,6 @@ void Server::ackE(FLAGACTION){
     removeFromPollSet(socket);
     clientTable.removeClientSocket(socket);
     sendPDU(socket, buffer, 0, FLAG_ACKE);
-    //TODO close on client side
 }
 
 void Server::cascadeB(FLAGACTION){
@@ -86,14 +84,12 @@ void Server::forwardCM(FLAGACTION){
     uint8_t curLen;
     uint8_t* curDst = PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2;
 
-    //TODO magic nums
     printf("client count = %d\n", PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]);
     for(int cnt = 0; cnt<PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]; cnt++){
         curLen = curDst[-1];
         memcpy(targetHandle, curDst, curLen);
         curDst+=curLen+1;
 
-        //TODO confirmations
         if((destPort = clientTable.getClientPort((char*)targetHandle))!=-1){
             forwardPDU(destPort, PDU, messageLength);
         }
@@ -125,6 +121,7 @@ void Server::respondL(FLAGACTION){
 }
 
 void Server::handshake(FLAGACTION){
+
     uint8_t handle[HANDLELENGTH];
     uint8_t buffer[MAXBUF];
 
@@ -134,7 +131,6 @@ void Server::handshake(FLAGACTION){
         sendPDU(socket, buffer,0, FLAG_ACCEPTCLIENT);
     }
     else{
-        //TODO
         sendPDU(socket, buffer,0, FLAG_REJECTCLIENT);
         printf("client tried to join with invalid handle");
     }
@@ -147,15 +143,15 @@ void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket){
         (this->*flagActions[flag])(PDU, messageLength, socket);
     }
     else{
-        printf("bad flag read\n");
+        printf("ERROR: bad flag read\n");
     }
 }
 
 void Server::errorFlag(FLAGACTION){
-    perror("server recieved PDU with an invalid flag\n");
+    printf("ERROR: server recieved PDU with an invalid flag\n");
 }
 
-void Server::addNewClient(int socket, char* handle){
+void Server::addNewClient(int socket){
 	
 	int sock;
     int len;

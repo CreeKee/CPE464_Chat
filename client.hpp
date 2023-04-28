@@ -38,7 +38,7 @@ class Client{
     int readFromStdin(uint8_t * buffer);
     void recvFromServer(int serverSock);
 
-    void errorFlag(RECVACTION){printf("\nrecieved unkown flag\n");}
+    void errorFlag(RECVACTION){printf("\nERROR: recieved unkown flag\n");}
     void ignoreFlag(RECVACTION){return;};
     void badConnect(RECVACTION){printf("Handle already in use %s\n",handle); close(serverSock); exit(0);}
     void displayB(RECVACTION){printf("%s\n", PDU+displayHandle(PDU)+1);}

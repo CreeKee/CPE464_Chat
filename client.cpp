@@ -39,18 +39,19 @@ void Client::createMessage(){
 	sendLen = readFromStdin(buffer);
 
 
-	if(buffer[0] != '%'){
-		printf("all commands must start with '%'\n");
+	if(buffer[0] != '%' || buffer[2] != ' '){
+		printf("Invalid command format\n");
 	} //TODO comman format checking
 	
+	//TODO magicnums
     else switch(tolower(buffer[1])){
 		case 'm':
-            
 			compileCM(buffer+3, sendLen, 1, FLAG_M);
 			break;
 
         case 'c':
-            compileCM(buffer+5, sendLen, buffer[3]-'0', FLAG_C);
+			if(buffer[4]== ' ') compileCM(buffer+5, sendLen, buffer[3]-'0', FLAG_C);
+			else printf("Invalid Command format\n");
             break;
 
 		case 'b':
@@ -58,14 +59,16 @@ void Client::createMessage(){
 			break;
 
         case 'l':
-            compileL();
+            if(sendLen == 3) compileL();
+			else printf("Invalid Command format\n");
             break;
 
 		case 'e':
-			compileE();
+			if(sendLen == 3)compileE();
+			else printf("Invalid Command format\n");
 			break;
 		default:
-			printf("unkown command %c%c\n",buffer[0], buffer[1]);
+			printf("Invalid command\n");
 			break;
 	}
 }
@@ -90,6 +93,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
     int check = 0;
 	int bufRemaining = buflen;
 
+
     if((dstCount == 1 && flag == FLAG_M) || (dstCount>=2 && dstCount<=9 && flag == FLAG_C)){
 
         PDU[0] = myhLen;
@@ -100,7 +104,6 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
         for(int dest = 0; dest < dstCount && check >=0; dest++){
             dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
-			printf("offset %d %d\n",buflen, check);
             bufRemaining -= check;
         }
 
@@ -109,6 +112,9 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
             fragment(PDU, buf, bufRemaining-1, dataStart, flag);
 
         }
+		else{
+			printf("Invalid command format. Count does not match number of handles\n");
+		}
     }
     else{
         printf("Invalid destination client count: %d\n", dstCount);
@@ -226,7 +232,6 @@ void Client::displayCM(RECVACTION){
 	}
 	printf("%s\n",PDU+offset);
 }
-
 
 uint8_t Client::displayHandle(uint8_t PDU[MAXBUF]){
 
