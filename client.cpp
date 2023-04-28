@@ -103,7 +103,6 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 			printf("offset %d %d\n",buflen, check);
             bufRemaining -= check;
         }
-		dataStart--;
 
         if(check>=0){
             
@@ -124,7 +123,7 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
         currlen = std::min(MAXMSG-1, buflen-shatter);
-        memcpy(PDU+(dataStart), buffer+shatter, currlen);
+        memcpy(PDU+(dataStart)-1, buffer+shatter, currlen);
 		printf("readback: %s\n",PDU);
         sendPDU(serverSock, PDU, currlen+dataStart, flag);
 

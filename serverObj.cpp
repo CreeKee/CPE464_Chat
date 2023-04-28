@@ -87,8 +87,8 @@ void Server::forwardCM(FLAGACTION){
     uint8_t* curDst = PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2;
 
     //TODO magic nums
-    printf("client count = %d\n", HANDLE_POS+PDU[HANDLELENGTH_POS]);
-    for(int cnt = 0; cnt<HANDLE_POS+PDU[HANDLELENGTH_POS]; cnt++){
+    printf("client count = %d\n", PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]);
+    for(int cnt = 0; cnt<PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]; cnt++){
         curLen = curDst[-1];
         memcpy(targetHandle, curDst, curLen);
         curDst+=curLen+1;
