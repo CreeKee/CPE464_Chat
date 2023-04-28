@@ -17,14 +17,15 @@ bool Clientele::insertClient(const char* handle, uint32_t socket){
     uint32_t hashVal = hash(handle);
     bool valid = true;
     
-    printf("inserting [%s] with length %d", handle, strlen(handle));
-    fflush(stdout);
+
 
     //scan to next available bucket and check for duplicates
     while(clients[hashVal] != NULL && valid == true){
         valid = (strcmp(clients[hashVal]->handle,handle) != 0);
         hashVal = (hashVal+1)%size;
     }
+        printf("inserting [%s] with length %d at %d", handle, strlen(handle), hashVal);
+    fflush(stdout);
     if(valid){
 
         //create new client entry in the table
