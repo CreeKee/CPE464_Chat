@@ -146,9 +146,9 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
 	uint8_t PDU[MAXBUF] = {0};
     uint8_t* buf = buffer;
+	uint8_t* bufref = buffer;
 	int dataStart = 0;
     int check = 0;
-	int bufRemaining = buflen;
 
 	//confirm that destination counts are correct
     if((dstCount == 1 && flag == FLAG_M) || (dstCount>=2 && dstCount<=9 && flag == FLAG_C)){
@@ -163,12 +163,12 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 		//gather destination clients and attatch them to the packet
         for(int dest = 0; dest < dstCount && check >=0; dest++){
             dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
-            bufRemaining -= check;
+			getcomp(&buf);
         }
 
         if(check>=0){
             //send message
-            fragment(PDU, buf, bufRemaining-1, dataStart, flag);
+            fragment(PDU, buf, buflen-(buf-bufref), dataStart, flag);
 
         }
 		else{
