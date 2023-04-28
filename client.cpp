@@ -231,6 +231,7 @@ void Client::displayCM(RECVACTION){
 
 uint8_t Client::displayHandle(uint8_t PDU[MAXBUF]){
 	uint8_t length = PDU[0];
-	printf("\n%.*s: ", length, PDU+1);
+	
+	printf("\n%d::%.*s: ",length, length, PDU+1);
 	return length;
 }
