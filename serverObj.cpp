@@ -1,6 +1,6 @@
 #include "serverObj.hpp"
 
-Server::Server(int portnum){
+Server::Server(uint32_t portnum){
 
     clientTable = Clientele();
     serverSocket = tcpServerSetup(portnum);
@@ -13,7 +13,7 @@ Server::Server(int portnum){
 }
 
 void Server::serverAction(){
-    int action;
+    uint32_t action;
 
     //poll all current sockets
     if((action = pollCall(-1)) != -1){
@@ -27,10 +27,10 @@ void Server::serverAction(){
     }
 }
 
-void Server::processPDU(int socket){
+void Server::processPDU(uint32_t socket){
 
 	uint8_t dataBuffer[MAXBUF];
-	int messageLen = 0;
+	uint32_t messageLen = 0;
 	
 	//get data from clientSocket
 	if ((messageLen = recvPDU(socket, dataBuffer, MAXBUF)) < 0)
@@ -66,7 +66,7 @@ void Server::cascadeB(FLAGACTION){
 
 	Crowd clientList = clientTable.getClients();
 
-    for(int client = 0; client < clientList.count; client++){
+    for(uint32_t client = 0; client < clientList.count; client++){
         printf("FLAG sending to %s on socket %d\n",clientList.clients[client].handle, clientList.clients[client].socket);
         fflush(stdout);
         if(clientList.clients[client].socket != socket){
@@ -80,12 +80,12 @@ void Server::forwardCM(FLAGACTION){
     
     uint8_t errorbuf[MAXBUF] = {0};
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
-    int destPort;
+    uint32_t destPort;
     uint8_t curLen;
     uint8_t* curDst = PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2;
 
     printf("client count = %d\n", PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]);
-    for(int cnt = 0; cnt<PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]; cnt++){
+    for(uint32_t cnt = 0; cnt<PDU[HANDLE_POS+PDU[HANDLELENGTH_POS]]; cnt++){
         curLen = curDst[-1];
         memcpy(targetHandle, curDst, curLen);
         curDst+=curLen+1;
@@ -137,8 +137,8 @@ void Server::handshake(FLAGACTION){
 
 }
 
-void Server::parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket){
-    int flag = readFlag(PDU);
+void Server::parsePDU(uint8_t PDU[MAXBUF], uint32_t messageLength, uint32_t socket){
+    uint8_t flag = readFlag(PDU);
     if( flag<= FLAGCOUNT && flag >=0){
         (this->*flagActions[flag])(PDU, messageLength, socket);
     }
@@ -151,9 +151,9 @@ void Server::errorFlag(FLAGACTION){
     printf("ERROR: server recieved PDU with an invalid flag\n");
 }
 
-void Server::addNewClient(int socket){
+void Server::addNewClient(uint32_t socket){
 	
-	int sock;
+	uint32_t sock;
 
 	//add new socket to the poll
 	if((sock = tcpAccept(serverSocket, DEBUG_FLAG)) == -1){

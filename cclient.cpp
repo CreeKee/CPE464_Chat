@@ -11,7 +11,6 @@
 #include "networks.h"
 #include "IOcontrol.hpp"
 #include "pollLib.h"
-#include <algorithm>
 #include "client.hpp"
 
 #define DEBUG_FLAG 1

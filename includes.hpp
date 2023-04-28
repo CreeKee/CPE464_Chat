@@ -13,6 +13,8 @@
 #include <netdb.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <algorithm>
+#include <algorithm>
 
 #define MAXMSG 200
 

@@ -10,7 +10,7 @@
 #define HANDLELENGTH_POS 3
 #define HANDLE_POS 4
 #define LCOUNT_LENGTH 4
-#define FLAGACTION uint8_t PDU[MAXBUF], int messageLength, int socket
+#define FLAGACTION uint8_t PDU[MAXBUF], uint32_t messageLength, uint32_t socket
 
 
 #ifndef SERVER_H
@@ -26,7 +26,7 @@ class Server{
         &Server::errorFlag, &Server::respondL};
 
     Clientele clientTable;
-    int serverSocket;
+    uint32_t serverSocket;
 
     void ackE(FLAGACTION);
     void cascadeB(FLAGACTION);
@@ -35,15 +35,15 @@ class Server{
     void handshake(FLAGACTION);
     void errorFlag(FLAGACTION);
 
-    void parsePDU(uint8_t PDU[MAXBUF], int messageLength, int socket);
+    void parsePDU(uint8_t PDU[MAXBUF], uint32_t messageLength, uint32_t socket);
     
-    void processPDU(int socket);
-    void addNewClient(int socket);
+    void processPDU(uint32_t socket);
+    void addNewClient(uint32_t socket);
     uint8_t readFlag(const uint8_t PDU[MAXBUF]);
 
     public:
     void serverAction();
-    Server(int portnum);
+    Server(uint32_t portnum);
 };
 
 
