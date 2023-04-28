@@ -39,33 +39,35 @@ void Client::createMessage(){
 	sendLen = readFromStdin(buffer);
 
 
-	if(buffer[0] != '%' || buffer[2] != ' '){
+	if(buffer[0] != '%'){
 		printf("Invalid command format\n");
 	} //TODO comman format checking
 	
 	//TODO magicnums
     else switch(tolower(buffer[1])){
 		case 'm':
-			compileCM(buffer+3, sendLen, 1, FLAG_M);
+			if(buffer[2]== ' ') compileCM(buffer+3, sendLen, 1, FLAG_M);
+			else printf("Invalid command format\n");
 			break;
 
         case 'c':
 			if(buffer[4]== ' ') compileCM(buffer+5, sendLen, buffer[3]-'0', FLAG_C);
-			else printf("Invalid Command format\n");
+			else printf("Invalid command format\n");
             break;
 
 		case 'b':
-			compileB(buffer+3, sendLen);
+			if(buffer[2]== ' ') compileB(buffer+3, sendLen);
+			else printf("Invalid command format\n");
 			break;
 
         case 'l':
             if(sendLen == 3) compileL();
-			else printf("Invalid Command format\n");
+			else printf("Invalid command format\n");
             break;
 
 		case 'e':
 			if(sendLen == 3)compileE();
-			else printf("Invalid Command format\n");
+			else printf("Invalid command format\n");
 			break;
 		default:
 			printf("Invalid command\n");
