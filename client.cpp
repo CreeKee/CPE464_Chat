@@ -219,18 +219,19 @@ void Client::sendHandshake(){
 void Client::displayCM(RECVACTION){
 
 	uint8_t offset = displayHandle(PDU)+1;
-	uint8_t clnts = PDU[offset];
+	uint8_t clnts = PDU[offset++];
 
 	for(int dsts = 0; dsts < clnts; dsts++){
-		offset += PDU[++offset] + 1;
+		offset += PDU[offset++];
 	}
 	printf("%s\n",PDU+offset);
 }
 
 
 uint8_t Client::displayHandle(uint8_t PDU[MAXBUF]){
+
 	uint8_t length = PDU[0];
 	
-	printf("%.*s: ",length, length, PDU+1);
+	printf("%.*s: ", length, PDU+1);
 	return length;
 }
