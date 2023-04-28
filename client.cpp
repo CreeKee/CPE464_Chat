@@ -49,10 +49,10 @@ void Client::clientAction(){
 }
 
 int32_t Client::getcomp(uint8_t** s){
-	while(*s && isspace(**s) && **s !='\0'){
+	while(**s && isspace(**s)){
 		*s++;
 	}
-	return *s&&**s!='\0'? **s : -1;
+	return **s ? **s : -1;
 }
 
 /*
