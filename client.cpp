@@ -106,7 +106,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
         if(check>=0){
             
-            fragment(PDU, buf-1, bufRemaining-1, dataStart, flag);
+            fragment(PDU, buf, bufRemaining-1, dataStart, flag);
 
         }
     }
