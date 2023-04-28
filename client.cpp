@@ -92,7 +92,7 @@ void Client::createMessage(){
 
 				case 'c':
 					targets = getcomp(&s)-'0';
-					if(getcomp(&s) != -1 && targets > 0) {
+					if((comp = getcomp(&s)) != -1 && targets > 0) {
 						printf("%d %c\n",targets, *s);
 						compileCM(s, sendLen, targets, FLAG_C);}
 					else {printf("Invalid command format\n");}
@@ -105,7 +105,6 @@ void Client::createMessage(){
 
 				case 'l':
 					//does not matter if any additional message is added on, just as long as the %L exists
-					printf("made it this far");
 					compileL();
 					break;
 
