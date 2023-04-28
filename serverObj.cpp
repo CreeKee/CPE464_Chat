@@ -168,7 +168,6 @@ void Server::handshake(FLAGACTION){
     memcpy(handle, PDU+HANDLE_POS, PDU[HANDLELENGTH_POS]);
 
     //check availability of handle
-    printf("adding clinet [%s]\n",(char*)handle);
     if(clientTable.insertClient((char*)handle, socket)){
         sendPDU(socket, buffer,0, FLAG_ACCEPTCLIENT);
     }

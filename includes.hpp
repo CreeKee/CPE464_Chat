@@ -46,7 +46,7 @@
 
 struct subclient{
     char handle[HANDLELENGTH+1] = {0};
-    int socket;
+    uint32_t socket;
 };
 
 #endif

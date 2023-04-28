@@ -16,7 +16,7 @@ bool Clientele::insertClient(const char* handle, uint32_t socket){
 
     uint32_t hashVal = hash(handle);
     bool valid = true;
-
+    printf("confirming %s\n",handle);
     //scan to next available bucket and check for duplicates
     while(clients[hashVal] != NULL && valid == true){
         valid = (strcmp(clients[hashVal]->handle,handle) != 0);
@@ -85,7 +85,7 @@ removeClientSocket scans the entire table to find the client with the desired po
 and remove their entry
 */
 void Clientele::removeClientSocket(uint32_t target){
-
+    printf("---->%d\n",clientCount);
     bool found = false;
 
     //locate target
