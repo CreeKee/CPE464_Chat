@@ -211,7 +211,7 @@ void Server::addNewClient(uint32_t socket){
 	uint32_t sock;
 
 	//add new socket to the poll
-	if((sock = tcpAccept(serverSocket, DEBUG_FLAG)) == -1){
+	if((sock = tcpAccept(serverSocket, 0)) == -1){
 		perror("failed to accept new client");
 
         //do not exit, it was probably the client's fault anyways
