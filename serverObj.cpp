@@ -135,7 +135,7 @@ respondL responds to a %L message by sending appropriate flag 11, 12, and 13 mes
 */
 void Server::respondL(FLAGACTION){
 
-    uint8_t buffer[MAXBUF];
+    uint8_t buffer[MAXBUF] = {0};
 
     //get list of all clients
     Crowd clients = clientTable.getClients();
@@ -146,10 +146,10 @@ void Server::respondL(FLAGACTION){
     //sendPDU(socket, buffer, LCOUNT_LENGTH, FLAG_LCOUNT);
 
     //send flag 12 message for each client
-    for(uint32_t clnt = 0; clnt < clients.count; clnt++){
-        insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
+    //for(uint32_t clnt = 0; clnt < clients.count; clnt++){
+    //    insertHandle(buffer, (uint8_t*)clients.clients[clnt].handle, strlen(clients.clients[clnt].handle));
         //sendPDU(socket, buffer,strlen(clients.clients[clnt].handle)+1,FLAG_LRESPONSE);
-    }
+   // }
 
     //send final flag 13 message
     //sendPDU(socket, buffer, 0, FLAG_LFINISH);
