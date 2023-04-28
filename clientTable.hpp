@@ -1,14 +1,12 @@
 #include "includes.hpp"
 #include "crowd.hpp"
 
-#ifndef TABLE_H
-#define TABLE_H
-
 #define HANDLELENGTH 100
 #define DEFAULTSIZE 100
 #define SIZETHRESH 0.5
 
-
+#ifndef TABLE_H
+#define TABLE_H
 
 class Clientele{
 
@@ -23,10 +21,11 @@ class Clientele{
 
     public:
         Clientele();
-        bool insertClient(const char* handle, int socket);
-        int getClientPort(char* handle);
+        ~Clientele();
+        bool insertClient(const char* handle, uint32_t socket);
+        int32_t getClientPort(char* handle);
         void removeClientHandle(char* handle);
-        void removeClientSocket(int target);
+        void removeClientSocket(uint32_t target);
         Crowd getClients();
 
 

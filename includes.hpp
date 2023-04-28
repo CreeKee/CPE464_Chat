@@ -41,11 +41,12 @@
 
 #define FLAGOFFSET 2
 
-
 #ifndef CLNT_H
 #define CLNT_H
+
 struct subclient{
     char handle[HANDLELENGTH+1] = {0};
     int socket;
 };
+
 #endif

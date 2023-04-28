@@ -7,7 +7,7 @@ LIBS =
 
 OBJS = networks.o gethostbyname.o pollLib.o safeUtil.o IOcontrol.o serverObj.o clientTable.o client.o
 
-.PHONY: $(OBJS)
+.PHONY: $(OBJS) cclient server
 
 all:   cclient server
 

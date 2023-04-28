@@ -24,19 +24,15 @@ int main(int argc, char * argv[])
 	checkArgs(argc, argv);
 
 	/* set up the TCP Client socket  */
-	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
+	socketNum = tcpClientSetup(argv[2], argv[3], DEBUG_FLAG);
 
-	Client cclient(socketNum, (uint8_t*)argv[3]);
+	//set up client
+	Client cclient(socketNum, (uint8_t*)argv[1]);
 
+	//run client in infinite loop. cclient will end the program when appropriate
 	while(1){
-
 		cclient.clientAction();
-
-
-		//TODO
 	}
-	
-	close(socketNum);
 	
 	return 0;
 }
@@ -48,11 +44,11 @@ void checkArgs(int argc, char * argv[])
 	{
 		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
-	}else if(strlen(argv[3]) > HANDLELENGTH-1){
+	}else if(strlen(argv[2]) > HANDLELENGTH-1){
 		printf("handle too long\n");
 		exit(-1);
 	}
-	else if(argv[3][0]<65 || argv[3][0] >122){
+	else if(argv[2][0]<65 || argv[2][0] >122){
 		printf("Invalid handle, handle starts with a number\n");
 		exit(-1);
 	}

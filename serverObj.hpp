@@ -19,6 +19,8 @@
 class Server{
 
     private:
+
+    //list of all actions to take depending on recieved flag
     void (Server::*flagActions[FLAGCOUNT])(FLAGACTION) = {
         &Server::errorFlag, &Server::handshake, &Server::errorFlag, 
         &Server::errorFlag, &Server::cascadeB, &Server::forwardCM, 
@@ -28,6 +30,7 @@ class Server{
     Clientele clientTable;
     uint32_t serverSocket;
 
+    //various actions to take depending on the flag of the incoming packet
     void ackE(FLAGACTION);
     void cascadeB(FLAGACTION);
     void forwardCM(FLAGACTION);

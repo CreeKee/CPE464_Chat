@@ -15,6 +15,8 @@
 class Client{
 
     private:
+
+    //list of all actions to take depending on recieved flag
     void (Client::*flagActions[PRINTACTIONS])(RECVACTION) = {
         &Client::errorFlag, &Client::errorFlag, &Client::ignoreFlag, 
         &Client::badConnect, &Client::displayB, &Client::displayCM, 
@@ -34,13 +36,16 @@ class Client{
 
     void fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int dataStart, int flag);
     void createMessage();
-    void sendToServer(int socketNum);
-    int readFromStdin(uint8_t * buffer);
+    uint32_t readFromStdin(uint8_t * buffer);
     void recvFromServer(int serverSock);
+    uint8_t displayHandle(uint8_t PDU[MAXBUF]);
+    void sendHandshake();
+    int32_t getcomp(uint8_t** s);
 
+    //various actions to take depending on the flag of the incoming packet
     void errorFlag(RECVACTION){printf("\nERROR: recieved unkown flag\n");}
     void ignoreFlag(RECVACTION){return;};
-    void badConnect(RECVACTION){printf("Handle already in use %s\n",handle); close(serverSock); exit(0);}
+    void badConnect(RECVACTION){printf("Handle already in use %s\n",handle); exit(1);}
     void displayB(RECVACTION){printf("%s\n", PDU+displayHandle(PDU)+1);}
     void displayCM(RECVACTION);
     void badHandle(RECVACTION){printf("\nClient with handle %.*s does not exist\n", PDU[0], PDU+1);}
@@ -49,12 +54,10 @@ class Client{
     void displayL(RECVACTION){printf("\t%.*s\n",PDU[0], PDU+1);}
     void finishL(RECVACTION){print$=true;}
 
-    uint8_t displayHandle(uint8_t PDU[MAXBUF]);
     
-    void sendHandshake();
 
     public:
-    Client(int socket, uint8_t myhandle[HANDLELENGTH]);
+    Client(uint32_t socket, uint8_t myhandle[HANDLELENGTH]);
     void clientAction();
 
 };

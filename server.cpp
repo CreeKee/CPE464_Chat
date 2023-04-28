@@ -8,28 +8,26 @@
 
 
 int checkArgs(int argc, char *argv[]);
+
 int main(int argc, char *argv[])
 {
 	int mainServerSocket = 0;   //socket descriptor for the server socket
-	int clientSocket = 0;   //socket descriptor for the client socket
 	int portNumber = 0;
 	Clientele clientTable;
 	
+	//get port number and verify arguments;
 	portNumber = checkArgs(argc, argv);
 	
 	//create the server socket
 	Server mainServer(portNumber);
 
-	// wait for client to connect
-	//clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
+	//run server
 	while(1){
 		mainServer.serverAction();
 	}
 	
-	/* close the sockets */
-	close(clientSocket);
+	/* close the server socket */
 	close(mainServerSocket);
-
 	
 	return 0;
 }

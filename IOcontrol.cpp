@@ -1,7 +1,9 @@
 #include "IOcontrol.hpp"
 
-
-void forwardPDU(int sock, uint8_t PDU[MAXBUF], int len){
+/*
+forwardPDU sends an unmodified packet to target socket
+*/
+void forwardPDU(uint32_t sock, uint8_t PDU[MAXBUF], uint32_t len){
     if(safeSend(sock, PDU, len, 0) < 0)
     {
         perror("send call");
@@ -9,7 +11,10 @@ void forwardPDU(int sock, uint8_t PDU[MAXBUF], int len){
     }
 }
 
-void sendPDU(int clientSocket, uint8_t* dataBuffer, int datalength, int flag){
+/*
+sendPDU attatches a chat header to a packet then sends it to target socket
+*/
+void sendPDU(uint32_t clientSocket, uint8_t* dataBuffer, uint32_t datalength, uint8_t flag){
 
     if (safeSend(clientSocket, dataBuffer, addChatHeader(dataBuffer, datalength, flag), 0) < 0)
     {
@@ -18,29 +23,16 @@ void sendPDU(int clientSocket, uint8_t* dataBuffer, int datalength, int flag){
     }
 }
 
-void prependLength(uint8_t* dataBuffer, int lengthOfData){
-    //TODO
-    int fullLen = lengthOfData+LENGTHFIELD;
-    uint8_t* PDU = (uint8_t*)sCalloc(fullLen,sizeof(uint8_t));
+/*
+recvPDU recieves a fully formated PDU into the given buffer. First recieving 
+the length field, then the full remaining packet.
+*/
+int32_t recvPDU(uint32_t socketNumber, uint8_t* dataBuffer, uint32_t bufferSize){
 
-    if(fullLen > MAXBUF){
-        perror("PDU too long after length appended\n");
-        exit(-1);
-    }
-    *(uint16_t*)PDU = htons(fullLen);
-    memcpy(PDU+LENGTHFIELD, dataBuffer, lengthOfData);
-    memcpy(dataBuffer, PDU, fullLen);
-    free(PDU);
-
-    return;
-}
-
-int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
-
-    int dataLength = 0;
+    uint32_t dataLength = 0;
 
     //recieve incoming PDU length
-    int retval = safeRecv(socketNumber, dataBuffer, LENGTHFIELD, MSG_WAITALL);
+    int32_t retval = safeRecv(socketNumber, dataBuffer, LENGTHFIELD, MSG_WAITALL);
 
     //check for disconnection
     if(retval != 0){
@@ -64,36 +56,52 @@ int recvPDU(int socketNumber, uint8_t* dataBuffer, int bufferSize){
     return retval;
 }
 
-int addChatHeader(uint8_t* dataBuffer, int lengthOfData, int flag){
-    int fullLen = lengthOfData+CHATLENGTH;
-    uint8_t PDU[MAXBUF] = {0};
+/*
+addChatHeader prepends a fully formated chat header to a given data buffer
+*/
+uint32_t addChatHeader(uint8_t* dataBuffer, uint32_t lengthOfData, uint8_t flag){
 
-    if(fullLen > MAXBUF){
-        perror("PDU too long after length appended\n");
+    uint32_t fullLen = lengthOfData+CHATLENGTH;
+
+    if(fullLen < MAXBUF){
+        memcpy(dataBuffer+CHATLENGTH, dataBuffer, lengthOfData);
+        *(uint16_t*)dataBuffer = htons(fullLen);
+        *(dataBuffer+2) = flag;
+    }
+    else{
+        perror("PDU too long after chat header was added\n");
         exit(-1);
     }
-    *(uint16_t*)PDU = htons(fullLen);
-    *(uint16_t*)(PDU+2) = flag;
 
-    memcpy(PDU+CHATLENGTH, dataBuffer, lengthOfData);
-    memcpy(dataBuffer, PDU, fullLen);
     return fullLen;
 }
 
+/*
+insertHandle takes a handle and its length and adds it to a given data buffer
+*/
 void insertHandle(uint8_t* PDUstart, uint8_t* handleStart, uint8_t hLen){
 	PDUstart[0] = hLen;
 	memcpy(PDUstart+1, handleStart, hLen);
 }
 
-int appendHandle(uint8_t* PDU, uint8_t** buffer){
+/*
+appendHandle extracts a handle from a buffer, calculates its length, and adds it
+to the given PDU. It then increments the buffer past the processed handle.
+*/
+int32_t appendHandle(uint8_t* PDU, uint8_t** buffer){
 
+    //locate end of handle
 	uint8_t* splitter = (uint8_t*)strchr((char*)*buffer, ' ');
-	int offset = 0;
+	int32_t offset = 0;
 
 	if(splitter != NULL){
+
+        //calculate length of handle
 		offset = splitter-*buffer;
 
 		if(offset < HANDLELENGTH){
+
+            //insert handle and increment buffer
 			PDU[0] = offset;
 			memcpy(PDU+1, *buffer, offset);
 			*buffer += offset+1;
