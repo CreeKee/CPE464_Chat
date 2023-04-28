@@ -224,9 +224,9 @@ void Client::displayCM(RECVACTION){
 
 	printf("num peers = %d\n",PDU[offset]);
 	for(int dsts = 0; dsts < PDU[offset]; dsts++){
-		offset+= PDU[(1+offset)] + 1;
+		offset+= PDU[(1+offset)] + 2;
 	}
-	printf("%s | %s | %c | %d\n",PDU, PDU+offset, PDU[offset], offset);
+	printf("%s | %s | %d | %d\n",PDU, PDU+offset, PDU[offset], offset);
 }
 
 
