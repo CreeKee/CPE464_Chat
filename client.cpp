@@ -48,6 +48,10 @@ void Client::clientAction(){
 	fflush(stdout);
 }
 
+/*
+getcomp jumps a pointer to the next componant in a buffer.
+used to skip whitespaces
+*/
 int32_t Client::getcomp(uint8_t** s){
 	while(**s && isspace(**s)){
 		*s += 1;
@@ -148,7 +152,6 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
 	uint8_t PDU[MAXBUF] = {0};
     uint8_t* buf = buffer;
-	uint8_t* bufref = buffer;
 	int dataStart = 0;
     int check = 0;
 
@@ -170,7 +173,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
         if(check>=0){
             //send message
-            fragment(PDU, buf, buflen-(buf-bufref), dataStart, flag);
+            fragment(PDU, buf, strlen((char*)buf)+1, dataStart, flag);
 
         }
 		else{
