@@ -123,7 +123,7 @@ void Client::fragment(uint8_t PDU[MAXBUF], uint8_t* buffer, int buflen, int data
     for(int shatter = 0; buflen>shatter; shatter += MAXMSG-1){
 
         currlen = std::min(MAXMSG-1, buflen-shatter);
-        memcpy(PDU+(dataStart)-1, buffer+shatter, currlen);
+        memcpy(PDU+(dataStart), buffer+shatter, currlen);
 		printf("readback: %s\n",PDU);
         sendPDU(serverSock, PDU, currlen+dataStart, flag);
 
