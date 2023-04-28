@@ -225,7 +225,7 @@ void Client::displayCM(RECVACTION){
 	for(int dsts = 0; dsts < PDU[offset]; dsts++){
 		offset+= *(PDU+(1+offset)) + 1;
 	}
-	printf("%s %s\n",PDU, PDU+offset);
+	printf("%s | %s | %c | %d\n",PDU, PDU+offset, PDU[offset], offset);
 }
 
 
