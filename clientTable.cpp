@@ -2,7 +2,7 @@
 
 Clientele::Clientele(){
     clients = new subclient*[DEFAULTSIZE];
-    size =DEFAULTSIZE;
+    size = DEFAULTSIZE;
     clientCount = 0;
     for(uint32_t init = 0; init < size; init++){
         clients[init] = NULL;
@@ -16,7 +16,7 @@ bool Clientele::insertClient(const char* handle, uint32_t socket){
 
     uint32_t hashVal = hash(handle);
     bool valid = true;
-    printf("confirming %s\n",handle);
+    
     //scan to next available bucket and check for duplicates
     while(clients[hashVal] != NULL && valid == true){
         valid = (strcmp(clients[hashVal]->handle,handle) != 0);
@@ -118,7 +118,7 @@ Crowd Clientele::getClients(){
         printf("<>%d\n", index);
         fflush(stdout);
         if(clients[index] != NULL){
-            printf("found client %s at %d\n",clients[index]->handle, index);
+            printf("found client %s at %d\n", index);
             fflush(stdout);
             //add client to crowd
             retval.clients[found].socket = clients[index]->socket;
