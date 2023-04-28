@@ -220,8 +220,11 @@ void Client::sendHandshake(){
 
 void Client::displayCM(RECVACTION){
 
+	uint8_t* s = PDU;
 	uint8_t offset = displayHandle(PDU)+1;
 
+	while(*s) printf("%02x - ", (unsigned int) *s++);
+	printf("\n");
 	
 	for(int dsts = 0; dsts < PDU[offset]; dsts++){
 		printf("num peers = %d, %d\n",PDU[offset], PDU[offset+1]);
