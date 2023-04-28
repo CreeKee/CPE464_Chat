@@ -88,6 +88,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 	int currlen;
 	int dataStart = 0;
     int check = 0;
+	int bufRemaining = buflen;
 
     if((dstCount == 1 && flag == FLAG_M) || (dstCount>=2 && dstCount<=9 && flag == FLAG_C)){
 
@@ -100,12 +101,12 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
         for(int dest = 0; dest < dstCount && check >=0; dest++){
             dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
 			printf("offset: %d\n", check);
-            buflen -= check;
+            bufRemaining -= check;
         }
 
         if(check>=0){
             
-            fragment(PDU, buf, buflen, dataStart, flag);
+            fragment(PDU, buf+1, bufRemaining-1, dataStart, flag);
 
         }
     }
