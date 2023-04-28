@@ -21,10 +21,7 @@ void sendPDU(uint32_t clientSocket, uint8_t* dataBuffer, uint32_t datalength, ui
         perror("send call");
         exit(-1);
     }
-    uint8_t* s = dataBuffer;
-    while(*s)
-        printf("%02x-", (unsigned int) *s++);
-    printf("\n");
+
 }
 
 /*
@@ -66,9 +63,11 @@ addChatHeader prepends a fully formated chat header to a given data buffer
 uint32_t addChatHeader(uint8_t* dataBuffer, uint32_t lengthOfData, uint8_t flag){
 
     uint32_t fullLen = lengthOfData+CHATLENGTH;
+    uint8_t holdover[MAXBUF] = {0};
 
     if(fullLen < MAXBUF){
-        memcpy(dataBuffer+CHATLENGTH, dataBuffer, lengthOfData);
+        memcpy(holdover, dataBuffer,lengthOfData);
+        memcpy(dataBuffer+CHATLENGTH, holdover, lengthOfData);
         *(uint16_t*)dataBuffer = htons(fullLen);
         *(dataBuffer+2) = flag;
     }
