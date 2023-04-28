@@ -85,8 +85,7 @@ removeClientSocket scans the entire table to find the client with the desired po
 and remove their entry
 */
 void Clientele::removeClientSocket(uint32_t target){
-    printf("---->%d\n",clientCount);
-    fflush(stdout);
+
     bool found = false;
 
     //locate target
@@ -111,7 +110,8 @@ void Clientele::removeClientSocket(uint32_t target){
 getClients coalates and returns a crowd containing all of the current clients
 */
 Crowd Clientele::getClients(){
-
+    printf("---->%d\n",clientCount);
+    fflush(stdout);
     Crowd retval(clientCount);
 
     //collect all clients
