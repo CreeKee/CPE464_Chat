@@ -139,10 +139,11 @@ void Server::respondL(FLAGACTION){
 
     //get list of all clients
     Crowd clients = clientTable.getClients();
-
+    printf("hi! %d\n", clients.count);
+    fflush(stdout);
     //convert client count to network order and send flag 11 message
     ((uint32_t*) buffer)[0] = htonl(clients.count);
-        printf("hi!\n");
+    printf("hi!\n");
     fflush(stdout);
     sendPDU(socket, buffer, LCOUNT_LENGTH, FLAG_LCOUNT);
     printf("by!\n");
