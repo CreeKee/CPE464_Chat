@@ -50,7 +50,7 @@ void Client::clientAction(){
 
 int32_t Client::getcomp(uint8_t** s){
 	while(**s && isspace(**s)){
-		*s++;
+		*s += 1;
 	}
 	return **s ? **s : -1;
 }
