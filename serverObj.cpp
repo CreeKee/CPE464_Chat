@@ -135,10 +135,10 @@ respondL responds to a %L message by sending appropriate flag 11, 12, and 13 mes
 */
 void Server::respondL(FLAGACTION){
 
-    //uint8_t buffer[MAXBUF] = {0};
+    uint8_t buffer[MAXBUF] = {0};
 
     //get list of all clients
-    //Crowd clients = clientTable.getClients();
+    Crowd clients = clientTable.getClients();
 
     //convert client count to network order and send flag 11 message
     //((uint32_t*) buffer)[0] = htonl(clients.count);
@@ -168,6 +168,7 @@ void Server::handshake(FLAGACTION){
     memcpy(handle, PDU+HANDLE_POS, PDU[HANDLELENGTH_POS]);
 
     //check availability of handle
+    printf("adding clinet [%s]\n",(char*)handle);
     if(clientTable.insertClient((char*)handle, socket)){
         sendPDU(socket, buffer,0, FLAG_ACCEPTCLIENT);
     }
