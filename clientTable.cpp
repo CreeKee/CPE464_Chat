@@ -115,7 +115,7 @@ Crowd Clientele::getClients(){
 
     //collect all clients
     for(uint32_t index = 0, found = 0; index < size && found < clientCount; index++){
-
+        
         if(clients[index] != NULL){
 
             //add client to crowd

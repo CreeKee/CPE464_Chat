@@ -15,12 +15,16 @@ void forwardPDU(uint32_t sock, uint8_t PDU[MAXBUF], uint32_t len){
 sendPDU attatches a chat header to a packet then sends it to target socket
 */
 void sendPDU(uint32_t clientSocket, uint8_t* dataBuffer, uint32_t datalength, uint8_t flag){
-
+    
     if (safeSend(clientSocket, dataBuffer, addChatHeader(dataBuffer, datalength, flag), 0) < 0)
     {
         perror("send call");
         exit(-1);
     }
+    uint8_t* s = dataBuffer;
+    while(*s)
+        printf("%02x-", (unsigned int) *s++);
+    printf("\n");
 }
 
 /*
