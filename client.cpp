@@ -103,6 +103,7 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 			printf("offset %d %d\n",buflen, check);
             bufRemaining -= check;
         }
+		dataStart--;
 
         if(check>=0){
             
