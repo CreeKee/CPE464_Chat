@@ -100,13 +100,13 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
 
         for(int dest = 0; dest < dstCount && check >=0; dest++){
             dataStart += (check = appendHandle((PDU+dataStart), &buf))+1;
-			printf("offset: %d\n", check);
+			printf("offset %d %d\n",buflen, check);
             bufRemaining -= check;
         }
 
         if(check>=0){
             
-            fragment(PDU, buf+1, bufRemaining-1, dataStart, flag);
+            fragment(PDU, buf-1, bufRemaining-1, dataStart, flag);
 
         }
     }
