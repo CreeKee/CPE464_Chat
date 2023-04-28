@@ -27,6 +27,7 @@ void Client::clientAction(){
 		}
     }
 	if(print$) printf("$: ");
+	fflush(stdout);
 }
 
 void Client::createMessage(){
