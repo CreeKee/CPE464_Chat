@@ -67,8 +67,8 @@ uint32_t addChatHeader(uint8_t* dataBuffer, uint32_t lengthOfData, uint8_t flag)
 
     if(fullLen < MAXBUF){
         memcpy(holldover+CHATLENGTH, dataBuffer,lengthOfData);
-        *(uint16_t*)dataBuffer = htons(fullLen);
-        *(dataBuffer+2) = flag;
+        *(uint16_t*)holldover = htons(fullLen);
+        *(holldover+2) = flag;
         memcpy(dataBuffer, holldover, fullLen);
         
     }
