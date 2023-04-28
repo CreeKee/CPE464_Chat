@@ -92,8 +92,9 @@ void Client::createMessage(){
 
 				case 'c':
 					targets = getcomp(&s)-'0';
-					getcomp(&s);
-					if(getcomp(&s) != -1 && targets > 0) {compileCM(s, sendLen, targets, FLAG_C);}
+					if(getcomp(&s) != -1 && targets > 0) {
+						printf("%d %c\n",targets, *s);
+						compileCM(s, sendLen, targets, FLAG_C);}
 					else {printf("Invalid command format\n");}
 					break;
 
