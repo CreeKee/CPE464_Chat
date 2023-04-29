@@ -45,7 +45,7 @@ class Client{
     //various actions to take depending on the flag of the incoming packet
     void errorFlag(RECVACTION){printf("\nERROR: recieved unkown flag\n");}
     void ignoreFlag(RECVACTION){return;};
-    void badConnect(RECVACTION){printf("Handle already in use %s\n",handle); exit(1);}
+    void badConnect(RECVACTION){printf("Handle already in use: %s\n",handle); exit(1);}
     void displayB(RECVACTION){printf("%s\n", PDU+displayHandle(PDU)+1);}
     void displayCM(RECVACTION);
     void badHandle(RECVACTION){printf("\nClient with handle %.*s does not exist\n", PDU[0], PDU+1);}
