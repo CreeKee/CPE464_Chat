@@ -1,7 +1,5 @@
 #include "clientTable.hpp"
 
-
-
 Clientele::Clientele(){
     clients = new subclient*[DEFAULTSIZE];
     size =DEFAULTSIZE;
