@@ -44,15 +44,14 @@ void checkArgs(int argc, char * argv[])
 	{
 		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
-	}else if(strlen(argv[2]) > HANDLELENGTH-1){
+	}else if(strlen(argv[1]) > HANDLELENGTH-1){
 		printf("handle too long\n");
 		exit(-1);
 	}
-	else if(argv[2][0]<65 || argv[2][0] >122){
+	else if(argv[1][0]<65 || argv[1][0] >122){
 		printf("Invalid handle, handle starts with a number\n");
 		exit(-1);
 	}
 
-	printf("\n%s\n", argv[2]);
 }
 
