@@ -22,7 +22,6 @@
 #define DEBUG_FLAG 1
 
 #define HANDLELENGTH 100
-#define DEFAULTSIZE 100
 #define SIZETHRESH 0.5
 
 #define FLAG_NEWCLIENT 1

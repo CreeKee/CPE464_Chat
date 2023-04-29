@@ -1,13 +1,12 @@
 #include "includes.hpp"
 #include "crowd.hpp"
 
-#ifndef TABLE_H
-#define TABLE_H
-
 #define HANDLELENGTH 100
 #define DEFAULTSIZE 1
 #define SIZETHRESH 0.5
 
+#ifndef TABLE_H
+#define TABLE_H
 
 
 class Clientele{
