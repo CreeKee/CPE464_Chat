@@ -52,5 +52,7 @@ void checkArgs(int argc, char * argv[])
 		printf("Invalid handle, handle starts with a number\n");
 		exit(-1);
 	}
+
+	printf("\n%s\n", argv[2]);
 }
 
