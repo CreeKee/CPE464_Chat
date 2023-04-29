@@ -110,23 +110,25 @@ uint32_t Clientele::hash(const char* handle){
 
 void Clientele::expandTable(){
 
-        subclient** oldTable = clients;
-        int oldSize = size;
+    printf("expanding table\n");
 
-        size = size<<1;
-        clients = new subclient*[size];
+    subclient** oldTable = clients;
+    int oldSize = size;
+    clientCount = 0;
+    size = size<<1;
+    clients = new subclient*[size];
 
 
-        for(int index = 0; index < size; index++){
-            clients[index] = NULL;
-        }
-
-        for(int index = 0; index < oldSize; index++){
-            if(oldTable[index] != NULL){
-                insertClient(oldTable[index]->handle, oldTable[index]->socket);
-                free(oldTable[index]);
-            }
-        }
-        free(oldTable);
-        return;
+    for(int index = 0; index < size; index++){
+        clients[index] = NULL;
     }
+
+    for(int index = 0; index < oldSize; index++){
+        if(oldTable[index] != NULL){
+            insertClient(oldTable[index]->handle, oldTable[index]->socket);
+            free(oldTable[index]);
+        }
+    }
+    free(oldTable);
+    return;
+}
