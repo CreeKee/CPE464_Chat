@@ -25,7 +25,7 @@ class Clientele{
         bool insertClient(const char* handle, int socket);
         int getClientPort(char* handle);
         void removeClientHandle(char* handle);
-        void removeClientSocket(int target);
+        void removeClientSocket(uint32_t target);
         Crowd getClients();
 
 

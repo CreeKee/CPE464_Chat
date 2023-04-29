@@ -19,7 +19,7 @@ from a client, or add a new client
 */
 void Server::serverAction(){
 
-    uint32_t action;
+    int32_t action;
 
     //poll all current sockets
     if((action = pollCall(-1)) != -1){
@@ -108,7 +108,7 @@ void Server::forwardCM(FLAGACTION){
     
     uint8_t errorbuf[MAXBUF] = {0};
     uint8_t targetHandle[HANDLELENGTH+1] = {0};
-    uint32_t destPort;
+    int32_t destPort;
     uint8_t curLen;
     uint8_t* curDst = PDU+HANDLE_POS+PDU[HANDLELENGTH_POS]+2;
 
@@ -208,7 +208,7 @@ pollset so their handshake can be recieved
 */
 void Server::addNewClient(uint32_t socket){
 	
-	uint32_t sock;
+	int32_t sock;
 
 	//add new socket to the poll
 	if((sock = tcpAccept(serverSocket, 0)) == -1){

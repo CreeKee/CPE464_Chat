@@ -61,7 +61,7 @@ void Clientele::removeClientHandle(char* handle){
     }
 }
 
-void Clientele::removeClientSocket(int target){
+void Clientele::removeClientSocket(uint32_t target){
     bool found = false;
     for(int index = 0; index < size && found == false; index++){
         if(clients[index] != NULL && clients[index]->socket == target){
@@ -102,7 +102,7 @@ uint32_t Clientele::hash(const char* handle){
     uint32_t hash = 5381;
     uint16_t c;
 
-    while (c = *handle++)
+    while ((c = *handle++))
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
     return hash%size;
