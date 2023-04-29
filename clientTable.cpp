@@ -110,8 +110,6 @@ uint32_t Clientele::hash(const char* handle){
 
 void Clientele::expandTable(){
 
-    printf("expanding table\n");
-
     subclient** oldTable = clients;
     int oldSize = size;
     clientCount = 0;

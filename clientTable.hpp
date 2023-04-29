@@ -2,7 +2,7 @@
 #include "crowd.hpp"
 
 #define HANDLELENGTH 100
-#define DEFAULTSIZE 1
+#define DEFAULTSIZE 256
 #define SIZETHRESH 0.5
 
 #ifndef TABLE_H
