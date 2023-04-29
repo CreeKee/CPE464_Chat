@@ -24,7 +24,7 @@ void Server::serverAction(){
     //poll all current sockets
     if((action = pollCall(-1)) != -1){
 
-        if(action == serverSocket){
+        if((uint32_t)action == serverSocket){
             addNewClient(serverSocket);
         }
         else{
