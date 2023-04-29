@@ -114,7 +114,7 @@ int32_t appendHandle(uint8_t* PDU, uint8_t** buffer){
 		}
 		else{
 			offset = -2;
-			printf("input handle is too long\n");
+			printf("Invalid handle, handle longer than 100 characters %.*s\n", offset, *buffer);
 		}
 	}
 	else{

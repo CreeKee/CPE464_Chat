@@ -174,11 +174,8 @@ void Client::compileCM(uint8_t buffer[MAXBUF], int buflen, uint8_t dstCount, int
         if(check>=0){
             //send message
             fragment(PDU, buf, strlen((char*)buf)+1, dataStart, flag);
-
         }
-		else{
-			printf("Invalid command format. Invalid handles\n");
-		}
+
     }
     else{
         printf("Invalid destination client count: %d\n", dstCount);

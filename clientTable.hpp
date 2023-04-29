@@ -5,7 +5,7 @@
 #define TABLE_H
 
 #define HANDLELENGTH 100
-#define DEFAULTSIZE 100
+#define DEFAULTSIZE 1
 #define SIZETHRESH 0.5
 
 

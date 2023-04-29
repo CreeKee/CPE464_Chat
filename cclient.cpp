@@ -45,7 +45,7 @@ void checkArgs(int argc, char * argv[])
 		printf("usage: %s host-name port-number desired-handle\n", argv[0]);
 		exit(1);
 	}else if(strlen(argv[1]) > HANDLELENGTH-1){
-		printf("handle too long\n");
+		printf("Invalid handle, handle longer than 100 characters: %s\n", argv[1]);
 		exit(-1);
 	}
 	else if(argv[1][0]<65 || argv[1][0] >122){
